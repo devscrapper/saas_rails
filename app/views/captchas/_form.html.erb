@@ -1,0 +1,21 @@
+<%= form_for(@captcha) do |f| %>
+    <% if @captcha.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@captcha.errors.count, "error") %> prohibited this traffic from being saved:</h2>
+
+          <ul>
+            <% @captcha.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <p>
+    <%= f.label "value captcha" %><%= f.text_field :value %>
+    <%= f.submit "Valid", data: {confirm: "Are you sure?"} %>
+    </p>
+    <%= image_tag(f.object.image_file_id, height: '1000', width: '1000') %>
+<% end %>
+
+
+
