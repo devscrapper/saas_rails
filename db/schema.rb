@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160704090139) do
+ActiveRecord::Schema.define(version: 20160720073349) do
 
   create_table "captchas", force: :cascade do |t|
     t.string   "visitor_id",                        null: false
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20160704090139) do
     t.string   "value",         default: "unknown", null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.string   "major_id",      default: "no id",   null: false
+    t.string   "minor_id",      default: "no id",   null: false
   end
 
 end

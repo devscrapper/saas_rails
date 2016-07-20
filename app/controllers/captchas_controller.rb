@@ -1,3 +1,6 @@
+require 'rest-client'
+
+
 class CaptchasController < ApplicationController
   protect_from_forgery
 
@@ -21,8 +24,39 @@ class CaptchasController < ApplicationController
           file.close
         end
 
-        # send mail
-        CaptchaMailer.image_email(@captcha).deliver_now
+
+        parameters = Parameter.new("captcha")
+        hostname_public = parameters.hostname_public
+        to = parameters.to
+        decaptcher_user=   parameters.decaptcher_user
+        decaptcher_password=   parameters.decaptcher_password
+
+        #send to decaptcher
+        begin
+          image = File.open(Rails.root.join('public', 'images', uploaded_io.original_filename))
+
+          resource = RestClient::Resource.new("http://poster.de-captcher.com")
+          response = resource.post("function" => "picture2",
+                                   "username" => decaptcher_user,
+                                   "password" => decaptcher_password,
+                                   "pict" => image,
+                                   "pict_type" => "0",
+                                   "submit" => "Send")
+
+          nul, major_id, minor_id, nul, nul, value = response.split("|")
+          @captcha.update!(major_id: major_id)   # major_id, minr_id sont utilisé par decaptcher pour identifier le capctha
+          @captcha.update!(minor_id: minor_id)
+          @captcha.update!(value: value)
+
+        rescue Exception => e
+          logger.debug e.message
+
+          # send mail
+          CaptchaMailer.image_email(@captcha.id, hostname_public, to).deliver_now
+
+        else
+
+        end
 
       rescue Exception => e
         logger.debug e.message
@@ -38,11 +72,13 @@ class CaptchasController < ApplicationController
   def edit
 
   end
-    # GET /websites
+
+  # GET /websites
   # GET /websites.json
   def index
     render json: Captcha.all
   end
+
   def show
     render json: @captcha
   end
