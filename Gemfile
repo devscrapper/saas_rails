@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rest-client', '1.8.0'
-
+gem 'mini_magick', '~> 4.5', '>= 4.5.1'
 gem 'rake', '~> 10.5.0'
 gem 'nokogiri', '1.6.7.rc3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

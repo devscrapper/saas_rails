@@ -24,7 +24,6 @@ class CaptchasController < ApplicationController
           file.close
         end
 
-
         parameters = Parameter.new("captcha")
         hostname_public = parameters.hostname_public
         to = parameters.to
