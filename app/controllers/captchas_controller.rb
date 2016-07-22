@@ -42,7 +42,13 @@ class CaptchasController < ApplicationController
                                    "pict_type" => "0",
                                    "submit" => "Send")
 
+          logger.debug response
           nul, major_id, minor_id, nul, nul, value = response.split("|")
+
+          logger.debug "major_id #{major_id}"
+          logger.debug "minor_id #{minor_id}"
+          logger.debug "text captcha#{value}"
+
           @captcha.update!(major_id: major_id)   # major_id, minr_id sont utilisé par decaptcher pour identifier le capctha
           @captcha.update!(minor_id: minor_id)
           @captcha.update!(value: value)
