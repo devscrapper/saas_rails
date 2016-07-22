@@ -1,11 +1,17 @@
 development:
     :hostname_public: "localhost:4000"
     :to: aymeric.austral@yahoo.com
+    :decaptcher_user: "lesclesdumidi"
+    :decaptcher_password: "lesclesdumidi34"
 
 test:
     :hostname_public: "olgadays.synology.me:8081"
     :to: aymeric.austral@yahoo.com
+    :decaptcher_user: "lesclesdumidi"
+    :decaptcher_password: "lesclesdumidi34"
 
 production:
     :hostname_public: "olgadays.synology.me:8081"
     :to: aymeric.austral@yahoo.com
+    :decaptcher_user: "lesclesdumidi"
+    :decaptcher_password: "lesclesdumidi34"
