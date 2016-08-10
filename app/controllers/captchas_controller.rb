@@ -25,50 +25,62 @@ class CaptchasController < ApplicationController
         end
 
         parameters = Parameter.new("captcha")
-        hostname_public = parameters.hostname_public
-        to = parameters.to
-        decaptcher_user=   parameters.decaptcher_user
-        decaptcher_password=   parameters.decaptcher_password
+        case params['mode']
+          when 'auto'
+            #send to decaptcher
+            decaptcher_user= parameters.decaptcher_user
+            decaptcher_password= parameters.decaptcher_password
 
-        #send to decaptcher
-        begin
-          image = File.open(Rails.root.join('public', 'images', uploaded_io.original_filename))
+            logger.debug "decaptcher_user #{decaptcher_user}"
+            logger.debug "decaptcher_password #{decaptcher_password}"
 
-          resource = RestClient::Resource.new("http://poster.de-captcher.com")
-          response = resource.post("function" => "picture2",
-                                   "username" => decaptcher_user,
-                                   "password" => decaptcher_password,
-                                   "pict" => image,
-                                   "pict_type" => "0",
-                                   "submit" => "Send")
+            image = File.open(Rails.root.join('public', 'images', uploaded_io.original_filename))
 
-          logger.debug response
-          nul, major_id, minor_id, nul, nul, value = response.split("|")
+            resource = RestClient::Resource.new("http://poster.de-captcher.com")
+            response = resource.post("function" => "picture2",
+                                     "username" => decaptcher_user,
+                                     "password" => decaptcher_password,
+                                     "pict" => image,
+                                     "pict_type" => "0",
+                                     "submit" => "Send")
 
-          logger.debug "major_id #{major_id}"
-          logger.debug "minor_id #{minor_id}"
-          logger.debug "text captcha#{value}"
+            logger.debug response
 
-          @captcha.update!(major_id: major_id)   # major_id, minr_id sont utilisé par decaptcher pour identifier le capctha
-          @captcha.update!(minor_id: minor_id)
-          @captcha.update!(value: value)
+            nul, major_id, minor_id, nul, nul, value = response.split("|")
 
-        rescue Exception => e
-          logger.debug e.message
+            logger.debug "major_id #{major_id}"
+            logger.debug "minor_id #{minor_id}"
+            logger.debug "text captcha #{value}"
 
-          # send mail
-          CaptchaMailer.image_email(@captcha.id, hostname_public, to).deliver_now
+            @captcha.update!({:major_id => major_id,
+                              :minor_id => minor_id,
+                              :value => value}) # major_id, minr_id sont utilisï¿½ par decaptcher pour identifier le capctha
 
-        else
+            File.delete(Rails.root.join('public', 'images', @captcha.image_file_id))
 
+          when 'manual'
+            # send mail
+            hostname_public = parameters.hostname_public
+            to = parameters.to
+
+            logger.debug "hostname_public #{hostname_public}"
+            logger.debug "to #{to}"
+
+            CaptchaMailer.image_email(@captcha.id, hostname_public, to).deliver_now
+
+          else
+            raise "unknown mode #{params['mode']}"
         end
+
 
       rescue Exception => e
         logger.debug e.message
+
         format.json { render json: e.message, status: :unprocessable_entity }
 
       else
         format.json { render json: @captcha, status: :created }
+
       end
     end
   end
