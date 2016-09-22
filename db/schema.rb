@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720073349) do
+ActiveRecord::Schema.define(version: 20160922153043) do
 
   create_table "captchas", force: :cascade do |t|
-    t.string   "visitor_id",                        null: false
+    t.string   "visit_id",                          null: false
     t.string   "image_file_id",                     null: false
     t.string   "value",         default: "unknown", null: false
     t.datetime "created_at",                        null: false

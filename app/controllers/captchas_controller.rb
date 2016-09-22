@@ -12,7 +12,7 @@ class CaptchasController < ApplicationController
 
     respond_to do |format|
       begin
-        @captcha.visitor_id = params['visitor_id']
+        @captcha.visit_id = params['visit_id']
         uploaded_io = params['image']
         @captcha.image_file_id = uploaded_io.original_filename
         # save to DB
@@ -43,6 +43,9 @@ class CaptchasController < ApplicationController
                                      "pict" => image,
                                      "pict_type" => "0",
                                      "submit" => "Send")
+            #TODO tester les CR de de captcher?
+            #TODO comment identifier qu'un problème est survenue ?
+            #on ne supprime pas les image si il y a des erreurs pour confirmer qu'il ya eu des erreurs.
 
             logger.debug response
 
@@ -136,7 +139,7 @@ class CaptchasController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def captcha_params
     params.require(:captcha).permit(:image,
-                                    :visitor_id,
+                                    :visit_id,
                                     :value)
   end
 end
