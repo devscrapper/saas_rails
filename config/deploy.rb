@@ -94,7 +94,7 @@ namespace :git do
   task :push do
     on roles(:all) do
       run_locally do
-        system 'git push origin master'
+        system 'git push origin master --force'
       end
     end
   end
