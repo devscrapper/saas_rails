@@ -102,6 +102,30 @@ end
 #----------------------------------------------------------------------------------------------------------------------
 # task list : log
 #----------------------------------------------------------------------------------------------------------------------
+namespace :log do
+  task :down do
+    on roles(:app) do
+      begin
+        capture("ls #{File.join(current_path, 'log', '*.*')}").split(/\r\n/).each { |log_file|
+          download! log_file, File.join(File.dirname(__FILE__), '..', 'log', File.basename(log_file))
+        }
+      rescue Exception => e
+        p "dont down log : #{e.message}"
+      end
+    end
+  end
+  task :delete do
+    on roles(:app) do
+      begin
+        sudo "rm #{File.join(current_path, 'log', '*.*')}"
+      rescue Exception => e
+      end
+    end
+  end
+
+
+end
+
 namespace :deploy do
   task :bundle_install do
     on roles(:app) do
