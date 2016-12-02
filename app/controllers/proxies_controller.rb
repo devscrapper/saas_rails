@@ -3,7 +3,7 @@ class ProxiesController < ApplicationController
   protect_from_forgery
 
   skip_before_action :verify_authenticity_token, if: :json_request?
-  before_action :anonimity_level, only: [:index]
+  before_action :anonimity_level, only: [:index, :check]
 
 
   # http://hostname/proxies/
@@ -13,7 +13,9 @@ class ProxiesController < ApplicationController
       format.html { render html: @data }
     end
   end
+ def check
 
+ end
 
   protected
 
@@ -34,9 +36,9 @@ class ProxiesController < ApplicationController
            :http_if_none_match => request.headers.fetch("HTTP_IF_NONE_MATCH", "null"),
            :http_cache_control => request.headers.fetch("HTTP_CACHE_CONTROL", "null"),
            :gateway_interface => request.headers.fetch("GATEWAY_INTERFACE", "null"),
-           :http_referrer => request.headers.fetch("HTTP_REFERRER", "null"),
+           :http_referrer => request.headers.fetch("HTTP_REFERER", "null"),
            :http_remote_addr => request.headers.fetch("REMOTE_ADDR", "null"),
-           :header => headers.to_h,
+           :header =>  "\n" + headers.map { |k, v|  " ".ljust(22) + "#{k} => #{v}" }.join("\n"),
            :authorization => request.authorization
           }
 

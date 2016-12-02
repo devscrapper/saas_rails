@@ -79,14 +79,6 @@ set :passenger_environment_variables, {}
 set :passenger_restart_command, 'passenger-config restart-app'
 set :passenger_restart_options, -> { "#{fetch(deploy_to)} --ignore-app-not-running" }
 
-before 'deploy:check:linked_files', 'config:push'
-
-# before 'deploy:starting', 'github:deployment:create'
-# after  'deploy:starting', 'github:deployment:pending'
-# after  'deploy:finished', 'github:deployment:success'
-# after  'deploy:failed',   'github:deployment:failure'
-
-
 #----------------------------------------------------------------------------------------------------------------------
 # task list : git push
 #----------------------------------------------------------------------------------------------------------------------
@@ -107,7 +99,7 @@ namespace :log do
     on roles(:app) do
       begin
         capture("ls #{File.join(current_path, 'log', '*.*')}").split(/\r\n/).each { |log_file|
-          download! log_file, File.join(File.dirname(__FILE__), '..', 'log', File.basename(log_file))
+          get log_file, File.join(File.dirname(__FILE__), '..', 'log', File.basename(log_file))
         }
       rescue Exception => e
         p "dont down log : #{e.message}"
@@ -117,7 +109,7 @@ namespace :log do
   task :delete do
     on roles(:app) do
       begin
-        sudo "rm #{File.join(current_path, 'log', '*.*')}"
+        execute :rm, "-rf", "#{File.join(current_path, 'log', '*.*')}"
       rescue Exception => e
       end
     end
@@ -134,16 +126,7 @@ namespace :deploy do
       end
     end
   end
-
-  after 'deploy:updating', 'deploy:bundle_install'
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
 end
+before 'deploy:updating', "git:push"
+after "deploy:updating", "log:delete"
+after 'deploy:updating', 'deploy:bundle_install'

@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+gem 'kaminari'
 
 gem 'rest-client', '1.8.0'
 

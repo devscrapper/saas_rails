@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  match '/proxies/check', to: 'proxies#check', via: [:get], as: :check
+
   resources :proxies
   resources :azerties
   resources :captchas

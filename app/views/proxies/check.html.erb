@@ -1,0 +1,28 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var headers = req.getAllResponseHeaders().toLowerCase();
+
+        $("#referrer").text('Referrer : ' + document.referrer);
+        $("#history").text('History : ' + history.length);
+        $("#header_http").text('Headers Http : ' + headers);
+    });
+
+
+</script>
+<div class="panel panel-default">
+  <div class="panel-heading"></div>
+  <div class="panel-body">
+<p>
+    <div id="referrer"></div>
+    <div id="history"></div>
+    <div id="header_http"></div>
+    </p>
+    <%= text_area_tag("data", @data.map { |k, v| "#{k.to_s.ljust(20)} = #{v}" }.join("\n"), rows: 40, cols: 180) %>
+  </div>
+</div>
+
+
