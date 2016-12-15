@@ -13,6 +13,13 @@ class LicensesController < ApplicationController
     render plain: (File.read(File.join("public", "licenses", "license.data"), mode: "rb"))
   end
 
+  # GET /licenses/new
+  def new
+    @license = License.new
+  end
+
+
+
   # POST /licenses
   # POST /licenses.json
   def create
