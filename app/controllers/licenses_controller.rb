@@ -4,7 +4,7 @@ class LicensesController < ApplicationController
   # GET /licenses
   # GET /licenses.json
   def index
-    @licenses = Dir.glob(Rails.root.join('public', 'licenses', "*")).map { |file|}
+    @licenses = Dir.glob(Rails.root.join('public', 'licenses', "*"))
   end
 
   # GET /licenses/1
