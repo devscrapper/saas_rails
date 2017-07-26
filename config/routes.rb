@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :searches
   resources :licenses
   match '/proxies/check', to: 'proxies#check', via: [:get], as: :check
 

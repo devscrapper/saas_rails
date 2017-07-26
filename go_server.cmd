@@ -1,0 +1,1 @@
+"D:\Personnel\JetBrains\RubyMine 7.1.4\bin\runnerw.exe" D:\Personnel\ruby223\bin\ruby.exe -e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift) D:/Personnel/referentiel/dev/saas_rails/bin/rails server -b 127.0.0.1 -p 4000 -e development
