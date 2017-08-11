@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 keywords : <%= @search.keywords %>
 
-<%  JSON.parse(@search.results).each { |url, properties|   %>
-    <p><%= link_to properties[0]["title"], url, rel: "nofollow" , target: :_blank%>  <%= properties.map{|property| property["engine"]}.uniq %></p>
+<%  @search.results.each { |url, properties|   %>
+    <p><%= link_to properties["engines"][0]["title"], url, rel: "nofollow" , target: :_blank%>  <%= properties["engines"].map{|engine| engine["name"]}.uniq.sort{ |a,b| a<=>b} %></p>
 <% } %>
 
 <br>
