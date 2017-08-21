@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-</head>
-<body>
+  <title>Search</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag "http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" %>
+  <%= javascript_include_tag "https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js" %>
+  <%= csrf_meta_tags %>
 
-<%= yield %>
+
+
+  <script>
+      $(document).ready(function () {
+          checkScroll();
+
+          $('[data-toggle="tooltip"]').tooltip();
+          $('[data-toggle="popover"]').popover();
+
+          // hide spinner
+          $(".fa").hide();
+
+
+          // show spinner on AJAX start
+          $(document).ajaxStart(function () {
+              $(".fa").show();
+          });
+
+          // hide spinner on AJAX stop
+          $(document).ajaxStop(function () {
+              $(".fa").hide();
+          });
+
+      });
+  </script>
+</head>
+
+<body>
+<div class="container-fluid">
+  <%= yield %>
+</div>
 
 </body>
 </html>

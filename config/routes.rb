@@ -1,17 +1,21 @@
 Rails.application.routes.draw do
 
   resources :searches
+  match '/searches/delete_all', to: 'searches#delete_all', via: [:post], as: :delete_all
   resources :licenses
   match '/proxies/check', to: 'proxies#check', via: [:get], as: :check
 
   resources :proxies
   resources :azerties
   resources :captchas
+  resources :results, only: :index
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+   root 'searches#new'
 
   # Example of regular route:
 

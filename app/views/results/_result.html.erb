@@ -1,0 +1,8 @@
+<li class="list-group-item">
+
+  <%= link_to result['results'][0][1]['engines'][0]["title"], result['results'][0][0], rel: "nofollow", target: :_blank %>
+  <% result['results'][0][1]['engines'].map { |engine| engine["name"] }.uniq.sort { |a, b| a<=>b }.map { |engine| %>
+      <img src=<%= image_path(engine + ".png") %> class="float-left" alt=<%= engine %> width="20" height="20">
+
+  <% } %>
+</li>

@@ -1,10 +1,17 @@
 source 'https://rubygems.org'
-gem 'kaminari'
 
+gem 'kaminari'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate', '~> 1.0.0'
+gem 'bootstrap-slider-rails', '~> 6.0', '>= 6.0.17'
 gem 'rest-client', '1.8.0'
 
 gem 'rake', '~> 10.5.0'
-gem 'nokogiri', '1.6.7.rc3'
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'autoprefixer-rails'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
+gem 'nokogiri', '1.6.8.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 

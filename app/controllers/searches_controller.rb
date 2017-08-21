@@ -1,6 +1,9 @@
 class SearchesController < ApplicationController
   before_action :set_search, only: [:show, :edit, :update, :destroy]
 
+  def delete_all
+    Search.all.each{|s| s.delete}
+  end
   # GET /searches
   # GET /searches.json
   def index(results)
@@ -34,13 +37,14 @@ class SearchesController < ApplicationController
           keywords = params['keywords'][0]
 
           @search = Search.find_by_keywords(keywords)
-          # option utiulisateur : vitesse ou complétude triée => count_page petit ou cout_page grand
+          # option utiulisateur : vitesse ou complï¿½tude triï¿½e => count_page petit ou cout_page grand
           if @search.nil?
             engines = "google|yahoo|bing"
             count_pages = 1
             index_page = 1
             href = "http://127.0.0.1:9251/?action=search&keywords=#{keywords}&engines=#{engines}&index_page=#{index_page}&count_pages=#{count_pages}"
 
+            logger.debug href
             s = Time.now
 
             results =RestClient.get href,
@@ -48,42 +52,53 @@ class SearchesController < ApplicationController
                                     :accept => :json
 
             delay = Time.now - s
+            @search = Search.new(:keywords => keywords) #
+            @search.save!
 
             results = JSON.parse(results).to_a.sort { |a, b| b[1]['weight'] <=> a[1]['weight'] }
 
-            @search = Search.new(:keywords => keywords,
-                                 :results => results,
-                                 :index => 2)
-            @search.save!
+            while !(ten_results = results.shift(1)).empty?
+              @result = @search.results.create!(:keywords => keywords,
+                                                :results => ten_results,
+                                                :index => index_page,
+                                                :count_results => ten_results.count,
+                                                :delay => delay)
+            end
 
             Thread.new {
               engines = "google|yahoo|bing"
-              count_pages = 2
+              count_pages = 1
               index_page = 2
               href = "http://127.0.0.1:9251/?action=search&keywords=#{keywords}&engines=#{engines}&index_page=#{index_page}&count_pages=#{count_pages}"
+              logger.debug href
+              s = Time.now
 
               results =RestClient.get href,
                                       :content_type => :json,
                                       :accept => :json
 
-              results = JSON.parse(results).to_a.sort { |a, b| b[1]['weight'] <=> a[1]['weight'] }
+              delay = Time.now - s
 
-              @search = Search.new(:keywords => keywords,
-                                   :results => results,
-                                   :index => 2)
-              @search.save!
+              results = JSON.parse(results).to_a.sort { |a, b| b[1]['weight'] <=> a[1]['weight'] }
+              while !(ten_results = results.shift(10)).empty?
+                @result = @search.results.create!(:keywords => keywords,
+                                                  :results => ten_results,
+                                                  :index => index_page,
+                                                  :count_results => ten_results.count,
+                                                  :delay => delay)
+              end
             }
           else
-            p @search
+
           end
 
         rescue Exception => e
-
+          logger.debug e.message
           format.html { render :new }
           format.json { render json: e.message, status: :unprocessable_entity }
         else
 
-          format.html { redirect_to search_path(@search[:id] || @search.id), notice: "#{results.count} elements found during #{delay}s." }
+          format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
           format.json { render :show, status: :created, location: @search }
         end
       end
