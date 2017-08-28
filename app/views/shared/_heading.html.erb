@@ -1,0 +1,47 @@
+<div id="col1">
+  <div class="bandeau">
+    <div class="mytable">
+
+      <%= form_for @search, remote: true do |f| %>
+          <div class="tablecell search_input">
+            <input autocomplete="off" type="text" size="30" class="gsc-input" name="search" title="rechercher" id="gsc-i-id1" dir="ltr" spellcheck="false" value=<%= @search.keywords %>>
+          </div>
+          <div class="tablecell gosearch" style="width:50px">
+
+            <!-- input id="searchbutton" type="button" value="Rechercher" class="hidden-sm hidden-xs btn btn-default" title="rechercher"-->
+            <button id="searchbutton" class="btn btn-default fa" title="rechercher">
+              <img src=<%= image_path("sprite.svg" + "#search-ico-blue") %>  width="24px"><!-- i class="fa fa-search"></i-->
+            </button>
+
+          </div>
+      <% end %>
+      <div class="tablecell logocell" style="width:120px">
+        <a href="/">
+          <img id="logolilo" src="//www.lilosearch.org/img/logo.svg" height="30" width="86">
+        </a>
+      </div>
+    </div>
+
+  </div>
+  <div class="mytable">
+    <div class="tablecell" style="width:90px">
+      <a href="#" class="btn btn-success btn-xs">
+        <span class="glyphicon glyphicon-picture"></span>
+      </a>
+    </div>
+    <div class="tablecell" style="width:90px">
+      <a href="#" class="btn btn-success btn-sm" >
+        <span class="glyphicon glyphicon-film"></span>
+      </a>
+    </div>
+    <div class="tablecell" style="width:90px">
+      <a href="#" class="btn btn-success btn-md">
+        <span class="glyphicon glyphicon-list-alt"></span>
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
+
+

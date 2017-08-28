@@ -97,9 +97,9 @@ class SearchesController < ApplicationController
           format.html { render :new }
           format.json { render json: e.message, status: :unprocessable_entity }
         else
-
+          format.json   {  render json: @result, status: :created}
           format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
-          format.json { render :show, status: :created, location: @search }
+        #  format.json { render :show, status: :created, location: @search }
         end
       end
     end

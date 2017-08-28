@@ -11,7 +11,7 @@ class ResultsController < ApplicationController
       @results = Result.paginate(:page => params[:page] || 1, :per_page => 10).order('id ASC')
       end
     @search_id = params[:search_id]
-
+    @search = Search.find_by(@search_id)
   end
 
   # GET /results/1

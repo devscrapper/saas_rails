@@ -1,8 +1,22 @@
-<li class="list-group-item">
+<div class="panel-group">
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <div class="text-left">
+        <%= label_tag :toto, result['results'][0][1]['engines'][0]["title"], class: "list-group-item-text" %>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="<%= result['results'][0][0] %>" width="350" height="300" style="border:2px; border-color: #398439;" sandbox>></iframe>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <% result['results'][0][1]['engines'].map { |engine| engine["name"] }.uniq.sort { |a, b| a<=>b }.map { |engine| %>
+          <img src=<%= image_path(engine + ".png") %> class="float-left" alt=<%= engine %> width="20" height="20">
 
-  <%= link_to result['results'][0][1]['engines'][0]["title"], result['results'][0][0], rel: "nofollow", target: :_blank %>
-  <% result['results'][0][1]['engines'].map { |engine| engine["name"] }.uniq.sort { |a, b| a<=>b }.map { |engine| %>
-      <img src=<%= image_path(engine + ".png") %> class="float-left" alt=<%= engine %> width="20" height="20">
-
-  <% } %>
-</li>
+      <% } %>
+      <%= link_to "view", result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-warning" %>
+      <%= link_to "go", result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-success" %>
+    </div>
+  </div>
+</div>
