@@ -114,10 +114,21 @@ namespace :log do
       end
     end
   end
-
-
 end
 
+namespace :images do
+  task :up do
+    on roles(:app) do
+      begin
+        upload! File.join(File.dirname(__FILE__), '..', 'public', "images"),
+                File.join(current_path, 'public', 'images'),
+                :recursive    => true
+      rescue Exception => e
+        p "dont up image : #{e.message}"
+      end
+    end
+  end
+end
 namespace :deploy do
   task :bundle_install do
     on roles(:app) do
@@ -129,4 +140,5 @@ namespace :deploy do
 end
 before 'deploy:updating', "git:push"
 after "deploy:updating", "log:delete"
+after "deploy:updating", "images:up"
 after 'deploy:updating', 'deploy:bundle_install'

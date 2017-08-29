@@ -31,10 +31,10 @@ class SearchesController < ApplicationController
   # POST /searches.json
   def create
     respond_to do |format|
-      unless params['keywords'].nil?
+      unless search_params['keywords'].nil?
         begin
 
-          keywords = params['keywords'][0]
+          keywords = search_params['keywords']
 
           @search = Search.find_by_keywords(keywords)
           # option utiulisateur : vitesse ou compl�tude tri�e => count_page petit ou cout_page grand
@@ -99,6 +99,7 @@ class SearchesController < ApplicationController
         else
           format.json   {  render json: @result, status: :created}
           format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
+          format.js   {}
         #  format.json { render :show, status: :created, location: @search }
         end
       end
