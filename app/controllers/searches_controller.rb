@@ -2,8 +2,9 @@ class SearchesController < ApplicationController
   before_action :set_search, only: [:show, :edit, :update, :destroy]
 
   def delete_all
-    Search.all.each{|s| s.delete}
+    Search.all.each { |s| s.delete }
   end
+
   # GET /searches
   # GET /searches.json
   def index(results)
@@ -39,54 +40,21 @@ class SearchesController < ApplicationController
           @search = Search.find_by_keywords(keywords)
           # option utiulisateur : vitesse ou compl�tude tri�e => count_page petit ou cout_page grand
           if @search.nil?
-            engines = "google|yahoo|bing"
-            count_pages = 1
-            index_page = 1
-            href = "http://127.0.0.1:9251/?action=search&keywords=#{keywords}&engines=#{engines}&index_page=#{index_page}&count_pages=#{count_pages}"
-
-            logger.debug href
-            s = Time.now
-
-            results =RestClient.get href,
-                                    :content_type => :json,
-                                    :accept => :json
-
-            delay = Time.now - s
             @search = Search.new(:keywords => keywords) #
             @search.save!
 
-            results = JSON.parse(results).to_a.sort { |a, b| b[1]['weight'] <=> a[1]['weight'] }
+            count_pages = 1
+            index_page = 1
+            @search.execute(index_page, count_pages)
 
-            while !(ten_results = results.shift(1)).empty?
-              @result = @search.results.create!(:keywords => keywords,
-                                                :results => ten_results,
-                                                :index => index_page,
-                                                :count_results => ten_results.count,
-                                                :delay => delay)
-            end
-
-            Thread.new {
-              engines = "google|yahoo|bing"
+            Thread.new {  # on pourrait utiliser 2 thread mais cela coute plus cher en ressource navigateur chez Saas
               count_pages = 1
               index_page = 2
-              href = "http://127.0.0.1:9251/?action=search&keywords=#{keywords}&engines=#{engines}&index_page=#{index_page}&count_pages=#{count_pages}"
-              logger.debug href
-              s = Time.now
-
-              results =RestClient.get href,
-                                      :content_type => :json,
-                                      :accept => :json
-
-              delay = Time.now - s
-
-              results = JSON.parse(results).to_a.sort { |a, b| b[1]['weight'] <=> a[1]['weight'] }
-              while !(ten_results = results.shift(10)).empty?
-                @result = @search.results.create!(:keywords => keywords,
-                                                  :results => ten_results,
-                                                  :index => index_page,
-                                                  :count_results => ten_results.count,
-                                                  :delay => delay)
-              end
+              @search.execute(index_page, count_pages)
+              # on pourrait aussi faire une recherche avec count_page = 2 pour eviter 2 appel ; la difference =
+              # les pages serait rangé sur le même index = 2, les liens serait classé en mélangeant des pages ; est ce un pb ?
+              index_page = 3
+              @search.execute(index_page, count_pages)
             }
           else
 
@@ -97,10 +65,10 @@ class SearchesController < ApplicationController
           format.html { render :new }
           format.json { render json: e.message, status: :unprocessable_entity }
         else
-          format.json   {  render json: @result, status: :created}
-          format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
-          format.js   {}
-        #  format.json { render :show, status: :created, location: @search }
+        #  format.json { render json: @result, status: :created }
+        #  format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
+          format.js {}
+          #  format.json { render :show, status: :created, location: @search }
         end
       end
     end

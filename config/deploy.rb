@@ -121,7 +121,7 @@ namespace :images do
     on roles(:app) do
       begin
         upload! File.join(File.dirname(__FILE__), '..', 'public', "images"),
-                File.join(current_path, 'public', 'images'),
+                File.join(current_path, 'public'),
                 :recursive    => true
       rescue Exception => e
         p "dont up image : #{e.message}"

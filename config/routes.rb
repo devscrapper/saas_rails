@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :proxies
   resources :azerties
   resources :captchas
-  resources :results, only: :index
+  resources :results
 
 
   # The priority is based upon order of creation: first created -> highest priority.

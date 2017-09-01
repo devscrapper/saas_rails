@@ -4,51 +4,65 @@ class ResultsController < ApplicationController
   # GET /results
   # GET /results.json
   def index
-    #@results = Result.where({:search_id => params[:search_id].}).page(params[:page] || 1)
-    unless params[:search_id].nil?
-    @results = Result.where(:search_id => params[:search_id]).paginate(:page => params[:page] || 1, :per_page => 10).order('id ASC') #car les results sont enregistre dans l'odre des poids, peu etre revisté plus tard
-    else
-      @results = Result.paginate(:page => params[:page] || 1, :per_page => 10).order('id ASC')
+    respond_to do |format|
+      begin
+        id = params[:id].to_i
+        index = params[:index].to_i
+        search_id =params[:search_id].to_i
+
+        unless Result.exists?(:index => index + 3) # on controle que la page + 3 est déjà chargée
+          # doit être égal au nombre de result fait la premiere fois dans search, sinon risque de trou si > ou reduction nombre prechargé
+          Thread.new {
+            count_pages = 1
+            index_page = index + 3 # on controle que la page + 3 est déjà chargée
+            # doit être égal au nombre de result fait la premiere fois dans search, sinon risque de trou si > ou reduction nombre prechargé
+
+            @search = Search.find_by_id(search_id)
+            @search.execute(index_page, count_pages)
+          }
+        else
+
+        end
+        @results = Result.where("id > #{id}").limit(10).order('id asc')
+
+      rescue Exception => e
+        logger.debug e.message
+        format.js {}
+
+      else
+        format.js {}
+
       end
-    @search_id = params[:search_id]
-    @search = Search.find_by(@search_id)
+    end
   end
 
   # GET /results/1
   # GET /results/1.json
+
   def show
     @results = Result.find(params[:id])
+    @search = @results.search
 
-    @next_results = Result.find_by_id(@results.id.next)
+    if Result.find_by_id(@results.id.next.next.next) # on controle que la page + 3 est déjà chargée
+      # doit être égal au nombre de result fait la premiere fois dans search, sinon risque de trou si > ou reduction nombre prechargé
+      Thread.new {
 
-    Thread.new {
-      begin
-        engines = "google|yahoo|bing"
-        count_pages = 1
-        index_page = @results.index + 1
-        keywords = @results.keywords
-        href = "http://127.0.0.1:9251/?action=search&keywords=#{keywords}&engines=#{engines}&index_page=#{index_page}&count_pages=#{count_pages}"
+        begin
+          count_pages = 1
+          index_page = @results.index + 3 # on controle que la page + 3 est déjà chargée
+          # doit être égal au nombre de result fait la premiere fois dans search, sinon risque de trou si > ou reduction nombre prechargé
 
-        s = Time.now
+          @search.execute(index_page, count_pages)
 
-        results =RestClient.get href,
-                                :content_type => :json,
-                                :accept => :json
+        rescue Exception => e
+          logger.debug e.message
 
-        delay = Time.now - s
+        else
+          format.js {}
 
-        results = JSON.parse(results).to_a.sort { |a, b| b[1]['weight'] <=> a[1]['weight'] }
-
-        @result = @results.search.results.create!(:keywords => keywords,
-                                                  :results => results,
-                                                  :index => index_page,
-                                                  :count_results => results.count,
-                                                  :delay => delay)
-      rescue Exception => e
-        logger.debug e.message
-      else
-      end
-    } if @next_results.nil?
+        end
+      }
+    end
   end
 
   # GET /results/new@result
@@ -100,5 +114,6 @@ class ResultsController < ApplicationController
   def result_params
     params.require(:result).permit(:keywords, :results, :index, :search_id)
   end
+
 end
 

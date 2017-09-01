@@ -1,3 +1,58 @@
+<script>
+    function estVisible(id_element) {
+        var cadreVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0}, elementVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0};
+        var source = document.getElementById(id_element), sourceParent = source.offsetParent;
+        var total = {hauteur: false, largeur: false}, partiel = {hauteur: false, largeur: false};
+        cadreVisible.xMin = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+        cadreVisible.xMax = window.pageXOffset + window.innerWidth || document.documentElement.scrollLeft + document.documentElement.clientWidth || document.body.scrollLeft + document.body.clientWidth;
+        cadreVisible.yMin = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        cadreVisible.yMax = window.pageYOffset + window.innerHeight || document.documentElement.scrollTop + document.documentElement.clientHeight || document.body.scrollTop + document.body.clientHeight;
+        elementVisible.xMin = source.offsetLeft;
+        elementVisible.yMin = source.offsetTop;
+        while (sourceParent) {
+            elementVisible.xMin += sourceParent.offsetLeft;
+            elementVisible.yMin += sourceParent.offsetTop;
+            sourceParent = sourceParent.offsetParent;
+        }
+        elementVisible.xMax = elementVisible.xMin + source.offsetWidth;
+        elementVisible.yMax = elementVisible.yMin + source.offsetHeight;
+        if (cadreVisible.xMin <= elementVisible.xMin && cadreVisible.xMax >= elementVisible.xMax) {
+            total.largeur = true;
+        }
+        else if (!(cadreVisible.xMax < elementVisible.xMin || cadreVisible.xMin > elementVisible.xMax)) {
+            partiel.largeur = true;
+        }
+        if (cadreVisible.yMin <= elementVisible.yMin && cadreVisible.yMax >= elementVisible.yMax) {
+            total.hauteur = true;
+        }
+        else if (!(cadreVisible.yMax < elementVisible.yMin || cadreVisible.yMin > elementVisible.yMax)) {
+            partiel.hauteur = true;
+        }
+        if (total.largeur && total.hauteur) {
+            return true;
+        }
+        else if (total.largeur && partiel.hauteur) {
+            return true;
+        }
+        else if (total.hauteur && partiel.largeur) {
+            return false;
+        }
+        else if (partiel.hauteur && partiel.largeur) {
+            return false;
+        }
+        else {
+            return false;
+        }
+    }
+    window.onscroll = function () {
+        if (estVisible("next")) {
+            $("#next").trigger("click");
+        }
+    };
+
+</script>
+
 <div id="results">
 
 </div>
+

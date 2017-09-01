@@ -20,3 +20,13 @@
     </div>
   </div>
 </div>
+<% if result_iteration.index == result_iteration.size - 1 %>
+
+    <%= link_to "Next", results_path({:id => result.id,
+                                      :index => result.index,
+                                      :search_id => result.search_id}),
+                remote: true,
+                class: "btn btn-default",
+                id: "next" %>
+
+<% end %>
