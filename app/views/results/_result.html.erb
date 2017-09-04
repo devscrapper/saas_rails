@@ -1,4 +1,5 @@
 <div id="results">
+
   <div class="panel-group" id="<%= "result_#{result.id.to_s}" %>">
     <div class="panel panel-success">
       <!-- debut header ----------------------------------------------------------------------------------------------->
@@ -33,9 +34,9 @@
                        class: "btn btn-warning" do
           content_tag(:span, '', class: "glyphicon glyphicon-refresh")
         end %>
-        <%= link_to result['results'][0][0],  rel: "nofollow", target: :_blank, class: "btn btn-success" do
+        <%= link_to result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-success" do
 
-            content_tag(:span, '', class: "glyphicon glyphicon-play")
+          content_tag(:span, '', class: "glyphicon glyphicon-play")
 
         end %>
       </div>
@@ -51,4 +52,5 @@
                   id: "next" %>
 
   <% end %>
+
 </div>
