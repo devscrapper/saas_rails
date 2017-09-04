@@ -2,29 +2,36 @@
   <div class="bandeau">
     <div class="mytable">
       <%= form_for(@search, remote: true) do |f| %>
-      <div class="tablecell search_input">
-        <%= f.text_field(:keywords,
-                         {size: 30, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false"}) %>
-      </div>
-      <div class="tablecell gosearch" style="width:50px">
+          <div class="tablecell search_input">
+            <%= f.text_field(:keywords,
+                             {size: 30, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false",
+                              onclick: "this.value = ''"})
 
-        <%= f.submit("searches",
-                      class: "btn btn-default fa",
-                     alt: "Sprite",
-                     src: "/images/sprite.svg#search-ico-blue",
-                     width: "50px",
-                     type:"image")
-        %>
-      </div>
-      <%end%>
+            %>
+          </div>
+
+          <div class="tablecell gosearch" style="width:50px">
+
+            <%= f.submit("searches",
+                         id: "go",
+                         class: "btn btn-default",
+                         alt: "Sprite",
+                         src: "/images/sprite.svg#search-ico-blue",
+                         width: "50px",
+                         type: "image")
+            %>
+
+          </div>
+
+      <% end %>
       <div class="tablecell logocell" style="width:120px">
         <a href="/">
           <img id="logolilo" src="//www.lilosearch.org/img/logo.svg" height="30" width="86">
         </a>
       </div>
     </div>
-
   </div>
+
   <div class="mytable">
     <div class="tablecell" style="width:90px">
       <a href="#" class="btn btn-success btn-xs">
@@ -43,7 +50,7 @@
     </div>
   </div>
 </div>
-</div>
+
 
 
 
