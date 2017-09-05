@@ -2,6 +2,8 @@
  * Created by ET00752 on 25/08/2017.
  */
 
+<%= logger.debug @search.results[0..9]%>
+<%= logger.debug escape_javascript(render partial:  "results/result" , collection: @search.results[0..9])%>
 $("<%= escape_javascript(render partial:  "results/result" , collection: @search.results[0..9]) %>").replaceAll("#results");
 
 
