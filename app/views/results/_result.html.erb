@@ -1,90 +1,85 @@
 <script>
-$(function(){
-  // Bind the swipeHandler callback function to the swipe event on div.box
-  $( "div.panel-group" ).on( "swipe", swipeHandler );
+    $(function () {
+        $("div.panel-group").on("swipe", swipeHandler);
 
-  // Callback function references the event target and adds the 'swipe' class to it
-  function swipeHandler( event ){
-    $( event.target ).addClass( "swipe" );
-  }
-});
+        function swipeHandler(event) {
+            $("#" + event.target.id).remove();
+
+        }
+    });
 </script>
-<div id="results">
 
-  <div class="panel-group" id="<%= "result_#{result.id.to_s}" %>">
-    <div class="panel panel-success">
-      <!-- debut header ----------------------------------------------------------------------------------------------->
-      <div class="panel-heading">
-        <div class="text-left">
-          <a data-toggle="collapse" href="<%= "#collapse_#{result.id.to_s}" %>">
-            <%= label_tag :toto, result['results'][0][1]['engines'][0]["title"], class: "list-group-item-text  text-success" %>
-          </a>
-        </div>
+<div class="panel-group" id="<%= "result_#{result.id.to_s}" %>">
+  <div class="panel panel-success">
+    <!-- debut header ----------------------------------------------------------------------------------------------->
+    <div class="panel-heading">
+      <div class="text-left">
+        <a data-toggle="collapse" href="<%= "#collapse_#{result.id.to_s}" %>">
+          <%= label_tag :toto, result['results'][0][1]['engines'][0]["title"], class: "list-group-item-text  text-success" %>
+        </a>
       </div>
-      <!-- debug body ----------------------------------------------------------------------------------------------->
-      <div id="<%= "collapse_#{result.id.to_s}" %>" class="panel-collapse collapse">
-        <div class="panel-body">
-          <strong>
+    </div>
+    <!-- debug body ----------------------------------------------------------------------------------------------->
+    <div id="<%= "collapse_#{result.id.to_s}" %>" class="panel-collapse collapse">
+      <div class="panel-body">
+        <strong>
           <ul class="list-group">
             <%= result['results'][0][1]['engines'].map { |engine| %>
                 <li class="list-group-item text-success text-justify h5">
 
                   <img src=<%= image_path(engine["name"] + ".png") %> class="float-left" alt=engine["name"] width="20" height="20">
 
-                    <%= engine["description"] %>
+                  <%= engine["description"] %>
 
             <% }.join("") %>
 
           </ul>
-          </strong>
-          <div id="<%= "collapse_iframe_#{result.id.to_s}" %>" class="embed-responsive embed-responsive-16by9 collapse">
-            <iframe id="<%= "iframe_#{result.id.to_s}" %>" class="embed-responsive-item" src="<%= result['results'][0][0] %>" width="350" height="300" style="border:2px; border-color: #398439;" sandbox>></iframe>
-          </div>
+        </strong>
+
+        <div id="<%= "collapse_iframe_#{result.id.to_s}" %>" class="embed-responsive embed-responsive-16by9 collapse">
+          <iframe id="<%= "iframe_#{result.id.to_s}" %>" class="embed-responsive-item" src="<%= result['results'][0][0] %>" width="350" height="300" style="border:2px; border-color: #398439;" sandbox>></iframe>
         </div>
       </div>
+    </div>
 
 
-      <!-- debut footer ----------------------------------------------------------------------------------------------->
-      <div class="panel-footer">
-        <%= button_tag "delete",
-                       onclick: "$(\'#result_" + result.id.to_s + "\').remove()",
-                       class: "btn btn-danger" do
-          content_tag(:span, '', class: "glyphicon glyphicon-trash")
-        end %>
-        <%= button_tag "reload",
-                       onclick: "document.getElementById(\'iframe_" + result.id.to_s + "\').src = document.getElementById(\'iframe_" + result.id.to_s + "\').src",
-                       class: "btn btn-primary" do
-          content_tag(:span, '', class: "glyphicon glyphicon-refresh")
-        end %>
-        <%= button_tag "view",
-                       onclick: "$(\'#collapse_" + result.id.to_s + "\').click();",
-                       class: "btn btn-primary",
-                       alt: "Just have a look !",
-                       data: {toggle: "collapse", target: "#collapse_iframe_#{result.id.to_s}"} do
-          content_tag(:span, '', class: "glyphicon glyphicon-resize-full")
-        end %>
+    <!-- debut footer ----------------------------------------------------------------------------------------------->
+    <div class="panel-footer">
+      <%= button_tag "delete",
+                     onclick: "$(\'#result_" + result.id.to_s + "\').trigger(\"swipe\");",
+                     class: "btn btn-danger" do
+        content_tag(:span, '', class: "glyphicon glyphicon-trash")
+      end %>
+      <%= button_tag "reload",
+                     onclick: "document.getElementById(\'iframe_" + result.id.to_s + "\').src = document.getElementById(\'iframe_" + result.id.to_s + "\').src",
+                     class: "btn btn-primary" do
+        content_tag(:span, '', class: "glyphicon glyphicon-refresh")
+      end %>
+      <%= button_tag "view",
+                     onclick: "$(\'#collapse_" + result.id.to_s + "\').click();",
+                     class: "btn btn-primary",
+                     alt: "Just have a look !",
+                     data: {toggle: "collapse", target: "#collapse_iframe_#{result.id.to_s}"} do
+        content_tag(:span, '', class: "glyphicon glyphicon-resize-full")
+      end %>
 
-        <%= button_tag "swipe",
-                       onclick: "$(\'#result_" + result.id.to_s + "\').trigger(\"swipe\");",
-                       class: "btn btn-default"
-        %>
-        <%= link_to result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-success" do
+      <%= link_to result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-success" do
 
-          content_tag(:span, '', class: "glyphicon glyphicon-play")
+        content_tag(:span, '', class: "glyphicon glyphicon-play")
 
-        end %>
-      </div>
+      end %>
     </div>
   </div>
-  <% if result_iteration.index == result_iteration.size - 1 %>
-
-      <%= link_to "Next", results_path({:id => result.id,
-                                        :index => result.index,
-                                        :search_id => result.search_id}),
-                  remote: true,
-                  class: "btn btn-default",
-                  id: "next" %>
-
-  <% end %>
-
 </div>
+<% if result_iteration.index == result_iteration.size - 1 %>
+
+    <%= link_to "Next", results_path({:id => result.id,
+                                      :index => result.index,
+                                      :search_id => result.search_id}),
+                remote: true,
+                class: "btn btn-default",
+                id: "next" %>
+
+<% end %>
+
+
