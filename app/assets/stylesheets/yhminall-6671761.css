@@ -1116,7 +1116,7 @@ input[type=radio]:focus, input[type=checkbox]:focus {
 }
 
 #gsc-i-id1 {
-    width: 40%;
+    color: #c2c0c0;
     margin-right: -5px;
     border: 1px solid #e0dfdf;
     border-right: 0;

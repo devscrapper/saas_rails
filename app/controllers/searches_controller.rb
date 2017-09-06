@@ -22,6 +22,7 @@ class SearchesController < ApplicationController
   # GET /searches/new@search
   def new
     @search = Search.new
+    @search.keywords = "Enter your keywords"
   end
 
   # GET /searches/1/edit

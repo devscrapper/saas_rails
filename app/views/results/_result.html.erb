@@ -13,9 +13,11 @@
   <div class="panel panel-success">
     <!-- debut header ----------------------------------------------------------------------------------------------->
     <div class="panel-heading">
-      <div class="text-left">
+      <div class=" text-left">
         <a data-toggle="collapse" href="<%= "#collapse_#{result.id.to_s}" %>">
-          <%= label_tag :toto, result['results'][0][1]['engines'][0]["title"], class: "list-group-item-text  text-success" %>
+          <%= label_tag URI(result['results'][0][0]).host, nil, class: "text-danger" %>
+          <img src=<%= image_path(Result.favicon(URI(result['results'][0][0]).host)) %> class="img-circle" alt=engine["name"] width="20" height="20">
+          <%= label_tag result['results'][0][1]['engines'][0]["title"] , nil, class: "text-success"  %>
         </a>
       </div>
     </div>
@@ -36,8 +38,8 @@
           </ul>
         </strong>
 
-        <div id="<%= "collapse_iframe_#{result.id.to_s}" %>" class="embed-responsive embed-responsive-16by9 collapse">
-          <iframe id="<%= "iframe_#{result.id.to_s}" %>" class="embed-responsive-item" src="<%= result['results'][0][0] %>" width="350" height="300" style="border:2px; border-color: #398439;" sandbox>></iframe>
+        <div id="<%= "collapse_iframe_#{result.id.to_s}" %>" class="collapse in embed-responsive embed-responsive-16by9 ">
+          <iframe id="<%= "iframe_#{result.id.to_s}" %>" class="embed-responsive-item" src="<%= result['results'][0][0] %>" width="350" height="350" style="border:2px; border-color: #398439;" sandbox>></iframe>
         </div>
       </div>
     </div>
@@ -50,18 +52,13 @@
                      class: "btn btn-danger" do
         content_tag(:span, '', class: "glyphicon glyphicon-trash")
       end %>
-      <%= button_tag "reload",
-                     onclick: "document.getElementById(\'iframe_" + result.id.to_s + "\').src = document.getElementById(\'iframe_" + result.id.to_s + "\').src",
-                     class: "btn btn-primary" do
-        content_tag(:span, '', class: "glyphicon glyphicon-refresh")
-      end %>
-      <%= button_tag "view",
+<!--      <%= button_tag "view",
                      onclick: "$(\'#collapse_" + result.id.to_s + "\').click();",
                      class: "btn btn-primary",
                      alt: "Just have a look !",
                      data: {toggle: "collapse", target: "#collapse_iframe_#{result.id.to_s}"} do
         content_tag(:span, '', class: "glyphicon glyphicon-resize-full")
-      end %>
+      end %>-->
 
       <%= link_to result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-success" do
 
