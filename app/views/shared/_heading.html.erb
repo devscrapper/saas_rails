@@ -1,6 +1,20 @@
+<script>
+
+    $(function () {
+        $("#gsc-i-id1").on("swipe", swipeHandler);
+
+        function swipeHandler(event) {
+            alert(event.target);
+//            $("#" + event.target.id).remove();
+
+        }
+    });
+
+</script>
 <div id="col1">
   <div class="bandeau">
     <div class="mytable">
+
       <%= form_for(@search, remote: true) do |f| %>
           <div class="tablecell search_input">
             <%= f.text_field(:keywords,
@@ -10,25 +24,19 @@
             %>
           </div>
 
-          <div class="tablecell gosearch" style="width:50px">
+          <div class="tablecell gosearch">
 
-            <%= f.submit("searches",
+            <%= f.button("searches",
                          id: "go",
                          class: "btn btn-default",
-                         alt: "Sprite",
-                         src: "/images/sprite.svg#search-ico-blue",
-                         width: "50px",
-                         type: "image")
+                         onclick: "$('#search_icon').addClass('glyphicon-refresh spinning');") do
+              content_tag(:span, nil, id: 'search_icon', class: 'glyphicon-left glyphicon glyphicon-search')
+            end
             %>
 
           </div>
-
       <% end %>
-      <div class="tablecell logocell" style="width:120px">
-        <a href="/">
-          <img id="logolilo" src="" height="30" width="86">
-        </a>
-      </div>
+
     </div>
   </div>
 
