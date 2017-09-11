@@ -8,6 +8,8 @@
 
         }
     });
+
+
 </script>
 
 <div id="col1">
@@ -35,17 +37,34 @@
 
     </div>
     <div class="mytable">
-        <div class="tablecell">
-          <%= button_tag("share", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
-            content_tag(:span, nil, id: 'share_icon', class: 'glyphicon-left glyphicon glyphicon-share')
-          end %>
+      <div class="tablecell">
+        <%= button_tag("share", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+          content_tag(:span, nil, id: 'share_icon', class: 'glyphicon-left glyphicon glyphicon-share')
+        end %>
+      </div>
+      <div class="tablecell">
+        <%= button_tag("history", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
+        end %>
+      </div>
+      <div class="tablecell">
+        <%= button_tag("scroll up", class: "btn btn-default gsc-input", onclick: "$('html, body').animate({
+                   scrollTop: 0
+               }, 700); ") do
+          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-up')
+        end %>
         </div>
         <div class="tablecell">
-          <%= button_tag("history", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
-            content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
-          end %>
+        <%=
+          button_tag("scroll down", class: "btn btn-default gsc-input", onclick: "$('html, body').animate({
+          scrollTop: $(document).height()
+          }, 700); ") do
+          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-down')
+          end
+          %>
         </div>
       </div>
+    </div>
   </div>
 
 </div>
