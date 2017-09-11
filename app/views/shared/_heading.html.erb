@@ -14,13 +14,13 @@
   <div class="bandeau navbar  navbar-fixed-top">
     <div class="mytable">
       <%= form_for(@search, remote: true) do |f| %>
-          <div class="tablecell search_input">
+          <div class="tablecell">
             <%= f.text_field(:keywords,
                              {size: 50, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false",
                               onclick: "$(this).css(\"color\", \"black\");this.value = ''"})
             %>
           </div>
-          <div class="tablecell gosearch">
+          <div class="tablecell">
             <%= f.button("searches",
                          id: "go",
                          class: "btn btn-default",
@@ -31,17 +31,22 @@
             %>
           </div>
       <% end %>
-      <div class="tablecell gosearch">
-        <%= button_tag("share", class: "btn btn-default", data: {toggle: "collapse", target: "#demo"}) do
-          content_tag(:span, nil, id: 'share_icon', class: 'glyphicon-left glyphicon glyphicon-share')
-        end %>
-      </div>
-        <div class="tablecell gosearch">
-        <%= button_tag("history", class: "btn btn-default", data: {toggle: "collapse", target: "#demo"}) do
-          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
-        end %>
-      </div>
+
+
     </div>
+    <div class="mytable">
+        <div class="tablecell">
+          <%= button_tag("share", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+            content_tag(:span, nil, id: 'share_icon', class: 'glyphicon-left glyphicon glyphicon-share')
+          end %>
+        </div>
+        <div class="tablecell">
+          <%= button_tag("history", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+            content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
+          end %>
+        </div>
+      </div>
   </div>
+
 </div>
 
