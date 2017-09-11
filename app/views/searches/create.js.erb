@@ -1,11 +1,14 @@
-/**
- * Created by ET00752 on 25/08/2017.
- */
-
-<%= logger.debug @search.results[0..9]%>
-<%= logger.debug escape_javascript(render partial:  "results/result" , collection: @search.results[0..9])%>
 $("<div id='results'> <%= escape_javascript(render partial:  "results/result" , collection: @search.results[0..9]) %></div>").replaceAll("#results");
 $('#search_icon').removeClass('glyphicon-refresh spinning');
+$(function () {
+    $("div").on("swipe", swipeHandler);
+
+    function swipeHandler(event, id) {
+
+        $(id).remove();
+
+    }
+});
 
 
 

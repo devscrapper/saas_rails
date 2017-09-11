@@ -5,21 +5,20 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag "yhminall-6671761" %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" %>
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, content="user-scalable=yes" ,shrink-to-fit=yes">
   <%= stylesheet_link_tag "http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" %>
   <%= csrf_meta_tags %>
 
 
 </head>
-<style>
 
-</style>
 <body>
-<div class="container fill">
+
   <div class="panel-heading"><%= render "shared/heading" %></div>
   <div class="panel-body">
     <%= yield %></div>
   <div class="panel-footer"><%= render "shared/footer" %></div>
-</div>
+
 </body>
 </html>

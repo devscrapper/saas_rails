@@ -14,10 +14,6 @@ class SearchesController < ApplicationController
 
   # GET /searches/1
   # GET /searches/1.json
-  def show
-    # results_count = @search.results.count
-    # @notice = "#{results_count} elements found."
-  end
 
   # GET /searches/new@search
   def new
@@ -40,7 +36,7 @@ class SearchesController < ApplicationController
 
           @search = Search.find_by_keywords(keywords)
           # option utiulisateur : vitesse ou compl�tude tri�e => count_page petit ou cout_page grand
-          if @search.nil?
+          if @search.nil? or @search.results.empty?
             @search = Search.new(:keywords => keywords) #
             @search.save!
 
@@ -48,7 +44,7 @@ class SearchesController < ApplicationController
             index_page = 1
             @search.execute(index_page, count_pages)
 
-            Thread.new {  # on pourrait utiliser 2 thread mais cela coute plus cher en ressource navigateur chez Saas
+            Thread.new {# on pourrait utiliser 2 thread mais cela coute plus cher en ressource navigateur chez Saas
               count_pages = 1
               index_page = 2
               @search.execute(index_page, count_pages)
@@ -60,14 +56,15 @@ class SearchesController < ApplicationController
           else
 
           end
-
+          @share = Search.new
         rescue Exception => e
           logger.debug e.message
           format.html { render :new }
           format.json { render json: e.message, status: :unprocessable_entity }
+          format.js {}
         else
-        #  format.json { render json: @result, status: :created }
-        #  format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
+          #  format.json { render json: @result, status: :created }
+          #  format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
           format.js {}
           #  format.json { render :show, status: :created, location: @search }
         end
@@ -75,18 +72,14 @@ class SearchesController < ApplicationController
     end
   end
 
+  def show
+
+  end
+
   # PATCH/PUT /searches/1
   # PATCH/PUT /searches/1.json
   def update
-    respond_to do |format|
-      if @search.update(search_params)
-        format.html { redirect_to @search, notice: 'Search was successfully updated.' }
-        format.json { render :show, status: :ok, location: @search }
-      else
-        format.html { render :edit }
-        format.json { render json: @search.errors, status: :unprocessable_entity }
-      end
-    end
+    create
   end
 
   # DELETE /searches/1
@@ -102,7 +95,14 @@ class SearchesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_search
-    @search = Search.find(params[:id])
+    begin
+      #recherche id d'une occurence
+      @search = Search.find(params[:id])
+    rescue Exception => e
+      #recherche avec un mot clé (pour show)
+      @search = Search.find_by_keywords(params[:id])
+    else
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
