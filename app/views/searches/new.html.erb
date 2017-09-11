@@ -46,10 +46,11 @@
     }
     window.onscroll = function () {
         if (estVisible("next")) {
-            $("#next").trigger("click");
+            $('#next').removeClass('glyphicon-play');
+            $('#next').addClass('glyphicon-refresh spinning');
+            $('#next').trigger("click");
         }
     };
-
 </script>
 
 

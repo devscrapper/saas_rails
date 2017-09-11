@@ -10,11 +10,6 @@
     });
 </script>
 
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popover();
-    });
-</script>
 <div id="col1">
   <div class="bandeau navbar  navbar-fixed-top">
     <div class="mytable">
@@ -42,8 +37,8 @@
         end %>
       </div>
         <div class="tablecell gosearch">
-        <%= button_tag("share", class: "btn btn-default", data: {toggle: "collapse", target: "#demo"}) do
-          content_tag(:span, nil, id: 'share_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
+        <%= button_tag("history", class: "btn btn-default", data: {toggle: "collapse", target: "#demo"}) do
+          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
         end %>
       </div>
     </div>

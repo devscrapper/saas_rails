@@ -5,8 +5,8 @@
       <div class=" text-left">
         <a data-toggle="collapse" href="<%= "#collapse_#{result.id.to_s}" %>">
           <%= label_tag URI(result['results'][0][0]).host, nil, class: "text-danger" %>
-          <img src=<%= image_path(Result.favicon(URI(result['results'][0][0]).host)) %> class="img-circle"  width="20" height="20">
-          <%= label_tag result['results'][0][1]['engines'][0]["title"] , nil, class: "text-success"  %>
+          <img src=<%= image_path(Result.favicon(URI(result['results'][0][0]).host)) %> class="img-circle" width="20" height="20">
+          <%= label_tag result['results'][0][1]['engines'][0]["title"], nil, class: "text-success" %>
         </a>
       </div>
     </div>
@@ -37,13 +37,13 @@
                      class: "btn btn-danger" do
         content_tag(:span, '', class: "glyphicon glyphicon-trash")
       end %>
-<!--      <%= button_tag "view",
-                     onclick: "$(\'#collapse_" + result.id.to_s + "\').click();",
-                     class: "btn btn-primary",
-                     alt: "Just have a look !",
-                     data: {toggle: "collapse", target: "#collapse_iframe_#{result.id.to_s}"} do
-        content_tag(:span, '', class: "glyphicon glyphicon-resize-full")
-      end %>-->
+      <!--      <%= button_tag "view",
+                               onclick: "$(\'#collapse_" + result.id.to_s + "\').click();",
+                               class: "btn btn-primary",
+                               alt: "Just have a look !",
+                               data: {toggle: "collapse", target: "#collapse_iframe_#{result.id.to_s}"} do
+      content_tag(:span, '', class: "glyphicon glyphicon-resize-full")
+    end %>-->
 
       <%= link_to result['results'][0][0], rel: "nofollow", target: :_blank, class: "btn btn-success" do
 
@@ -55,12 +55,14 @@
 </div>
 <% if result_iteration.index == result_iteration.size - 1 %>
 
-    <%= link_to "Next", results_path({:id => result.id,
+    <%= link_to "", results_path({:id => result.id,
                                       :index => result.index,
                                       :search_id => result.search_id}),
                 remote: true,
-                class: "btn btn-default",
-                id: "next" %>
+                id: "next",
+                class: "btn btn-default glyphicon glyphicon-play"
+
+    %>
 
 <% end %>
 
