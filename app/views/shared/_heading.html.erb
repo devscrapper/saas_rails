@@ -15,25 +15,26 @@
 <div id="col1">
   <div class="bandeau navbar  navbar-fixed-top">
     <div class="mytable">
-      <%= form_for(@search, remote: true) do |f| %>
-          <div class="tablecell">
-            <%= f.text_field(:keywords,
-                             {size: 50, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false",
-                              onclick: "$(this).css(\"color\", \"black\");this.value = ''"})
-            %>
-          </div>
-          <div class="tablecell">
-            <%= f.button("searches",
-                         id: "go",
-                         class: "btn btn-default",
+      <div class="tablecell">
+        <%= form_for(@search, remote: true) do |f| %>
+            <div class="tablecell">
+              <%= f.text_field(:keywords,
+                               {size: 50, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false",
+                                onclick: "$(this).css(\"color\", \"black\");this.value = ''"})
+              %>
+            </div>
+            <div class="tablecell">
+              <%= f.button("searches",
+                           id: "go",
+                           class: "btn btn-default",
 
-                         onclick: "$('#search_icon').addClass('glyphicon-refresh spinning');") do
-              content_tag(:span, nil, id: 'search_icon', class: 'glyphicon-left glyphicon glyphicon-search')
-            end
-            %>
-          </div>
-      <% end %>
-
+                           onclick: "$('#search_icon').addClass('glyphicon-refresh spinning');") do
+                content_tag(:span, nil, id: 'search_icon', class: 'glyphicon-left glyphicon glyphicon-search')
+              end
+              %>
+            </div>
+        <% end %>
+      </div>
 
     </div>
     <div class="mytable">
@@ -43,7 +44,7 @@
         end %>
       </div>
       <div class="tablecell">
-        <%= button_tag("history", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+        <%= link_to("searches/history", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
           content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
         end %>
       </div>
@@ -53,19 +54,18 @@
                }, 700); ") do
           content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-up')
         end %>
-        </div>
-        <div class="tablecell">
+      </div>
+      <div class="tablecell">
         <%=
-          button_tag("scroll down", class: "btn btn-default gsc-input", onclick: "$('html, body').animate({
+            button_tag("scroll down", class: "btn btn-default gsc-input", onclick: "$('html, body').animate({
           scrollTop: $(document).height()
           }, 700); ") do
-          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-down')
-          end
-          %>
-        </div>
+              content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-down')
+            end
+        %>
       </div>
     </div>
   </div>
-
 </div>
+
 

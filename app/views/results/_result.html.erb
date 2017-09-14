@@ -1,5 +1,5 @@
 <div class="panel-group" id="<%= "result_#{result.id.to_s}" %>">
-  <div class="panel panel-success">
+  <div class="panel panel-default">
     <!-- debut header ----------------------------------------------------------------------------------------------->
     <div class="panel-heading">
       <div class=" text-left">
@@ -7,6 +7,7 @@
           <%= label_tag URI(result['results'][0][0]).host, nil, class: "text-danger" %>
           <img src=<%= image_path(Result.favicon(URI(result['results'][0][0]).host)) %> class="img-circle" width="20" height="20">
           <%= label_tag result['results'][0][1]['engines'][0]["title"], nil, class: "text-success" %>
+          <%= content_tag "p", result['results'][0][1]['engines'][0]["description"] , nil, class: "small text-justify"  %>
         </a>
       </div>
 
@@ -57,8 +58,8 @@
 <% if result_iteration.index == result_iteration.size - 1 %>
 
     <%= link_to "", results_path({:id => result.id,
-                                      :index => result.index,
-                                      :search_id => result.search_id}),
+                                  :index => result.index,
+                                  :search_id => result.search_id}),
                 remote: true,
                 id: "next",
                 class: "btn btn-default glyphicon glyphicon-play"

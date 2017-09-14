@@ -2027,8 +2027,8 @@ div.tab_video {
     display: table-cell;
     vertical-align: top;
     background-color: #398439;
-    padding-top: 10px;
-    padding-bottom: 20px
+    padding-top: 5px;
+    padding-bottom: 10px
 }
 
 .bandeau .tablecell:first-child {
@@ -2160,4 +2160,8 @@ li > .searchBarButton {
 
 .glyphicon-left {
     margin-right: 7px;
+}
+
+#results {
+    padding-top: 50px;
 }

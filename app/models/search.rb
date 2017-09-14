@@ -9,7 +9,7 @@ class Search < ActiveRecord::Base
     logger.debug href
     s = Time.now
 
-    results =RestClient.get href,
+    results =RestClient.get URI::encode(href),
                             :content_type => :json,
                             :accept => :json
 
