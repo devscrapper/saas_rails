@@ -1,28 +1,48 @@
-  <div class="panel-group">
-    <div class="panel panel-success">
-      <!-- debut header ----------------------------------------------------------------------------------------------->
-      <div class="panel-heading">
-        <div class=" text-left">
-          <p>history keywords</p>
-        </div>
-
+<div class="panel-group">
+  <div class="panel panel-success">
+    <!-- debut header ----------------------------------------------------------------------------------------------->
+    <div class="panel-heading">
+      <div class=" text-left">
+        <p>history keywords</p>
       </div>
 
-      <!-- debug body ----------------------------------------------------------------------------------------------->
+    </div>
 
-      <div class="panel-body">
-        <ul>
-          <% @keywords.map { |keyword| %>
-              <li><%= link_to keyword, search_path(id: keyword), remote: true %></li>
-          <% } %>
-        </ul>
+    <!-- debug body ----------------------------------------------------------------------------------------------->
 
-      </div>
+    <div class="panel-body">
+      <% @searches.map { |search| %>
+          <div class="row">
+            <div class="col-xs-4">
+              <%= link_to search.keywords, search_path(id: search.keywords), remote: true
+              %>
+            </div>
+            <div class="col-xs-1">
+              <h6>
+                <%= time_ago_in_words(search.created_at, include_seconds: true) %>
+              </h6>
+            </div>
+            <div class="col-xs-1">
+              <h6>
+                <%= search.results.size %> results
+              </h6>
+            </div>
+            <div class="col-xs-6">
+              <div class="btn-group">
+                <%= link_to "Delete", search_path(search), method: :delete , remote: true, class: "btn btn-success"
+                %>
+                <%= link_to "Refresh", search_path(search), method: :put , remote: true, class: "btn btn-success"
+                               %>
+              </div>
+            </div>
+          </div>
+      <% } %>
+    </div>
 
 
-      <!-- debut footer ----------------------------------------------------------------------------------------------->
-      <div class="panel-footer">
+    <!-- debut footer ----------------------------------------------------------------------------------------------->
+    <div class="panel-footer">
 
-      </div>
     </div>
   </div>
+</div>

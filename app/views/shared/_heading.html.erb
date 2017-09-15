@@ -52,7 +52,7 @@
         <%= button_tag("scroll up", class: "btn btn-default gsc-input", onclick: "$('html, body').animate({
                    scrollTop: 0
                }, 700); ") do
-          content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-up')
+          content_tag(:span, nil, id: 'scroll_up_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-up')
         end %>
       </div>
       <div class="tablecell">
@@ -60,7 +60,7 @@
             button_tag("scroll down", class: "btn btn-default gsc-input", onclick: "$('html, body').animate({
           scrollTop: $(document).height()
           }, 700); ") do
-              content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-down')
+              content_tag(:span, nil, id: 'scroll_down_icon', class: 'glyphicon-left glyphicon glyphicon-arrow-down')
             end
         %>
       </div>

@@ -7,7 +7,7 @@ class SearchesController < ApplicationController
 
   # GET /searches
   # GET /searches.json
-  def index(results)
+  def index
     #@searches = Search.all
 
   end
@@ -31,7 +31,6 @@ class SearchesController < ApplicationController
     respond_to do |format|
       unless search_params['keywords'].nil?
         begin
-
           keywords = search_params['keywords']
 
           @search = Search.find_by_keywords(keywords)
@@ -72,28 +71,44 @@ class SearchesController < ApplicationController
     end
   end
 
-  def show
-     logger.debug params
-     respond_to do |format|
-       format.js {}
-     end
-  end
 
-  # PATCH/PUT /searches/1
-  # PATCH/PUT /searches/1.json
-  def update
-    create
-  end
 
   # DELETE /searches/1
   # DELETE /searches/1.json
   def destroy
     @search.destroy
-    respond_to do |format|
-      format.html { redirect_to searches_url, notice: 'Search was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to controller: 'histories', action: 'index', status: 303
   end
+
+  def show
+    logger.debug params
+    # respond_to do |format|
+    #   format.js {}
+    # end
+  end
+
+  # PATCH/PUT /searches/1
+  # PATCH/PUT /searches/1.json
+  def update
+
+    @search.results.each{|result| @search.results.destroy(result)}
+    count_pages = 1
+    index_page = 1
+    @search.execute(index_page, count_pages)
+
+    Thread.new {# on pourrait utiliser 2 thread mais cela coute plus cher en ressource navigateur chez Saas
+      count_pages = 1
+      index_page = 2
+      @search.execute(index_page, count_pages)
+      # on pourrait aussi faire une recherche avec count_page = 2 pour eviter 2 appel ; la difference =
+      # les pages serait rangé sur le même index = 2, les liens serait classé en mélangeant des pages ; est ce un pb ?
+      index_page = 3
+      @search.execute(index_page, count_pages)
+    }
+    redirect_to controller: 'histories', action: 'index', status: 303
+  end
+
+
 
   private
   # Use callbacks to share common setup or constraints between actions.
