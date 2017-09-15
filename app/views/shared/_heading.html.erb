@@ -44,7 +44,7 @@
         end %>
       </div>
       <div class="tablecell">
-        <%= link_to("searches/history", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+        <%= link_to(histories_path, class: "btn btn-default gsc-input", remote: true) do
           content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
         end %>
       </div>

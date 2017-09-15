@@ -1,0 +1,28 @@
+  <div class="panel-group">
+    <div class="panel panel-success">
+      <!-- debut header ----------------------------------------------------------------------------------------------->
+      <div class="panel-heading">
+        <div class=" text-left">
+          <p>history keywords</p>
+        </div>
+
+      </div>
+
+      <!-- debug body ----------------------------------------------------------------------------------------------->
+
+      <div class="panel-body">
+        <ul>
+          <% @keywords.map { |keyword| %>
+              <li><%= link_to keyword, search_path(id: keyword), remote: true %></li>
+          <% } %>
+        </ul>
+
+      </div>
+
+
+      <!-- debut footer ----------------------------------------------------------------------------------------------->
+      <div class="panel-footer">
+
+      </div>
+    </div>
+  </div>

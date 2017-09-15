@@ -73,7 +73,10 @@ class SearchesController < ApplicationController
   end
 
   def show
-
+     logger.debug params
+     respond_to do |format|
+       format.js {}
+     end
   end
 
   # PATCH/PUT /searches/1

@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :histories
   resources :searches
   match '/searches/delete_all', to: 'searches#delete_all', via: [:post], as: :delete_all
+
   resources :licenses
   match '/proxies/check', to: 'proxies#check', via: [:get], as: :check
 
