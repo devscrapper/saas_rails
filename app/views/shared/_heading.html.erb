@@ -28,7 +28,7 @@
                            id: "go",
                            class: "btn btn-default",
 
-                           onclick: "$('#search_icon').addClass('glyphicon-refresh spinning');") do
+                           onclick: "$('#search_icon').addClass('glyphicon-refresh spinning');addToHistory($('#gsc-i-id1').val());") do
                 content_tag(:span, nil, id: 'search_icon', class: 'glyphicon-left glyphicon glyphicon-search')
               end
               %>
@@ -37,6 +37,7 @@
       </div>
 
     </div>
+
     <div class="mytable">
       <div class="tablecell">
         <%= button_tag("share", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
@@ -44,7 +45,7 @@
         end %>
       </div>
       <div class="tablecell">
-        <%= link_to(histories_path, class: "btn btn-default gsc-input", remote: true) do
+        <%= link_to(histories_path, class: "btn btn-default gsc-input", data: { toto: "54"} , remote: true, onclick: "$(\"#gsc-i-id1\").val(\"\");") do
           content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
         end %>
       </div>

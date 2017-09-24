@@ -35,10 +35,11 @@ class SearchesController < ApplicationController
 
           @search = Search.find_by_keywords(keywords)
           # option utiulisateur : vitesse ou compl�tude tri�e => count_page petit ou cout_page grand
-          if @search.nil? or @search.results.empty?
+          if @search.nil?
             @search = Search.new(:keywords => keywords) #
             @search.save!
-
+          end
+          if @search.results.empty?
             count_pages = 1
             index_page = 1
             @search.execute(index_page, count_pages)
@@ -72,7 +73,6 @@ class SearchesController < ApplicationController
   end
 
 
-
   # DELETE /searches/1
   # DELETE /searches/1.json
   def destroy
@@ -82,32 +82,38 @@ class SearchesController < ApplicationController
 
   def show
     logger.debug params
-    # respond_to do |format|
-    #   format.js {}
-    # end
+    respond_to do |format|
+      format.js {}
+    end
   end
 
   # PATCH/PUT /searches/1
   # PATCH/PUT /searches/1.json
   def update
 
-    @search.results.each{|result| @search.results.destroy(result)}
-    count_pages = 1
-    index_page = 1
-    @search.execute(index_page, count_pages)
+    @search.results.each { |result| @search.results.destroy(result) }
 
-    Thread.new {# on pourrait utiliser 2 thread mais cela coute plus cher en ressource navigateur chez Saas
+    begin
       count_pages = 1
-      index_page = 2
+      index_page = 1
       @search.execute(index_page, count_pages)
-      # on pourrait aussi faire une recherche avec count_page = 2 pour eviter 2 appel ; la difference =
-      # les pages serait rangé sur le même index = 2, les liens serait classé en mélangeant des pages ; est ce un pb ?
-      index_page = 3
-      @search.execute(index_page, count_pages)
-    }
-    redirect_to controller: 'histories', action: 'index', status: 303
-  end
 
+      Thread.new {# on pourrait utiliser 2 thread mais cela coute plus cher en ressource navigateur chez Saas
+        count_pages = 1
+        index_page = 2
+        @search.execute(index_page, count_pages)
+        # on pourrait aussi faire une recherche avec count_page = 2 pour eviter 2 appel ; la difference =
+        # les pages serait rangé sur le même index = 2, les liens serait classé en mélangeant des pages ; est ce un pb ?
+        index_page = 3
+        @search.execute(index_page, count_pages)
+      }
+    rescue Exception => e
+      logger.debug e.message
+    else
+    ensure
+      redirect_to controller: 'histories', action: 'index', status: 303
+    end
+  end
 
 
   private

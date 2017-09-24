@@ -14,27 +14,31 @@
       <% @searches.map { |search| %>
           <div class="row">
             <div class="col-xs-4">
-              <%= link_to search.keywords, search_path(id: search.keywords), remote: true
+              <%= link_to search[:keywords], search_path(id: search[:keywords]), remote: true
               %>
             </div>
             <div class="col-xs-1">
               <h6>
-                <%= time_ago_in_words(search.created_at, include_seconds: true) %>
+                <%= time_ago_in_words(search[:date], include_seconds: true) %>
               </h6>
             </div>
-            <div class="col-xs-1">
-              <h6>
-                <%= search.results.size %> results
-              </h6>
-            </div>
-            <div class="col-xs-6">
-              <div class="btn-group">
-                <%= link_to "Delete", search_path(search), method: :delete , remote: true, class: "btn btn-success"
-                %>
-                <%= link_to "Refresh", search_path(search), method: :put , remote: true, class: "btn btn-success"
-                               %>
-              </div>
-            </div>
+            <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
+                <div class="col-xs-1">
+                  <h6>
+                    <%= search[:count_results] %> results
+                  </h6>
+                </div>
+            <% end %>
+            <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
+                <div class="col-xs-6">
+                  <div class="btn-group">
+                    <%= link_to "Delete", search_path(search[:keywords]), method: :delete, remote: true, class: "btn btn-success"
+                    %>
+                    <%= link_to "Refresh", search_path(search[:keywords]), method: :put, remote: true, class: "btn btn-success"
+                    %>
+                  </div>
+                </div>
+            <% end %>
           </div>
       <% } %>
     </div>
