@@ -32,7 +32,7 @@
             <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
                 <div class="col-xs-6">
                   <div class="btn-group">
-                    <%= link_to "Delete", search_path(search[:keywords]), method: :delete, remote: true, class: "btn btn-success"
+                    <%= link_to "Delete", history_path(search[:keywords]), method: :delete, remote: true, class: "btn btn-success"
                     %>
                     <%= link_to "Refresh", search_path(search[:keywords]), method: :put, remote: true, class: "btn btn-success"
                     %>

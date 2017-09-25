@@ -73,19 +73,13 @@ class SearchesController < ApplicationController
   end
 
 
-  # DELETE /searches/1
-  # DELETE /searches/1.json
-  def destroy
-    @search.destroy
-    redirect_to controller: 'histories', action: 'index', status: 303
-  end
-
   def show
     logger.debug params
     respond_to do |format|
       format.js {}
     end
   end
+
 
   # PATCH/PUT /searches/1
   # PATCH/PUT /searches/1.json
@@ -111,7 +105,9 @@ class SearchesController < ApplicationController
       logger.debug e.message
     else
     ensure
-      redirect_to controller: 'histories', action: 'index', status: 303
+      respond_to do |format|
+        format.js {}
+      end
     end
   end
 

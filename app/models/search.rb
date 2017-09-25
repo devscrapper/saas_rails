@@ -2,6 +2,12 @@ class Search < ActiveRecord::Base
   has_many :results, dependent: :destroy
   serialize :results, Array
 
+  def self.history
+    Search.all.order("keywords ASC").map { |k|
+      {keywords: k.keywords, date: k.created_at, count_results: k.results.size}
+    }
+  end
+
   def execute(index_page, count_pages)
     engines = "google|yahoo|bing"
 
@@ -19,10 +25,10 @@ class Search < ActiveRecord::Base
 
     while !(result = results.shift(1)).empty?
       @result = self.results.create!(:keywords => keywords,
-                                        :results => result,
-                                        :index => index_page,
-                                        :count_results => result.count,
-                                        :delay => delay)
+                                     :results => result,
+                                     :index => index_page,
+                                     :count_results => result.count,
+                                     :delay => delay)
     end
     @result
   end
