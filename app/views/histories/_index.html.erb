@@ -1,52 +1,82 @@
-<div class="panel-group">
-  <div class="panel panel-success">
-    <!-- debut header ----------------------------------------------------------------------------------------------->
-    <div class="panel-heading">
-      <div class=" text-left">
-        <p>history keywords</p>
-      </div>
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#home">History</a></li>
+  <li><a data-toggle="tab" href="#menu1">Favorites</a></li>
+</ul>
 
-    </div>
-
-    <!-- debug body ----------------------------------------------------------------------------------------------->
-
-    <div class="panel-body">
-      <% @searches.map { |search| %>
-          <div class="row">
-            <div class="col-xs-4">
-              <%= link_to search[:keywords], search_path(id: search[:keywords]), remote: true
-              %>
-            </div>
-            <div class="col-xs-1">
-              <h6>
-                <%= time_ago_in_words(search[:date], include_seconds: true) %>
-              </h6>
-            </div>
-            <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
-                <div class="col-xs-1">
-                  <h6>
-                    <%= search[:count_results] %> results
-                  </h6>
-                </div>
-            <% end %>
-            <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
-                <div class="col-xs-6">
-                  <div class="btn-group">
-                    <%= link_to "Delete", history_path(search[:keywords]), method: :delete, remote: true, class: "btn btn-success"
-                    %>
-                    <%= link_to "Refresh", search_path(search[:keywords]), method: :put, remote: true, class: "btn btn-success"
-                    %>
-                  </div>
-                </div>
-            <% end %>
+<div class="tab-content">
+  <div id="home" class="tab-pane fade in active">
+    <p>
+      <% @history.map { |search| %>
+        <div class="row">
+          <div class="col-xs-4">
+            <%= link_to search[:keywords], search_path(id: search[:keywords]), remote: true
+            %>
           </div>
-      <% } %>
-    </div>
-
-
-    <!-- debut footer ----------------------------------------------------------------------------------------------->
-    <div class="panel-footer">
-
-    </div>
+          <div class="col-xs-1">
+            <h6>
+              <%= time_ago_in_words(search[:date], include_seconds: true) %>
+            </h6>
+          </div>
+          <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
+              <div class="col-xs-1">
+                <h6>
+                  <%= search[:count_results] %> results
+                </h6>
+              </div>
+          <% end %>
+          <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
+              <div class="col-xs-6">
+                <div class="btn-group">
+                  <%= link_to "Delete", history_path(search[:keywords]), method: :delete, remote: true, class: "btn btn-success"
+                  %>
+                  <%= link_to "Refresh", search_path(search[:keywords]), method: :put, remote: true, class: "btn btn-success"
+                  %>
+                </div>
+              </div>
+          <% end %>
+        </div>
+    <% } %>
+    </p>
   </div>
+  <div id="menu1" class="tab-pane fade">
+    <p>
+      <% @favorites.map { |search| %>
+        <div class="row">
+          <div class="col-xs-4">
+            <%= link_to search[:keywords], search_path(id: search[:keywords]), remote: true
+            %>
+          </div>
+          <div class="col-xs-1">
+            <h6>
+              <%= time_ago_in_words(search[:date], include_seconds: true) %>
+            </h6>
+          </div>
+          <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
+              <div class="col-xs-1">
+                <h6>
+                  <%= search[:count_results] %> results
+                </h6>
+              </div>
+          <% end %>
+          <% unless search[:count_results].nil? %>  <!-- a remplacer par un test que le user est identifie -->
+              <div class="col-xs-6">
+                <div class="btn-group">
+                  <%= link_to "Delete", history_path(search[:keywords]), method: :delete, remote: true, class: "btn btn-success"
+                  %>
+                  <%= link_to "Refresh", search_path(search[:keywords]), method: :put, remote: true, class: "btn btn-success"
+                  %>
+                </div>
+              </div>
+          <% end %>
+        </div>
+    <% } %>
+    </p>
+  </div>
+
 </div>
+
+
+
+
+
+

@@ -7,18 +7,30 @@ class HistoriesController < ApplicationController
   def index
     begin
 
-      unless cookies['keywords'].nil? # à remplacer par le controleque le user n'est pas identifié. Car si il l'est alors on lui retourne son hisotrique savegardé
-
-        cookies['keywords'].split("||").each { |k|
+      unless cookies['history'].nil? # à remplacer par le controleque le user n'est pas identifié. Car si il l'est alors on lui retourne son hisotrique savegardé
+        @history = cookies['history'].split("||").map { |k|
           unless k.empty?
             arr = k.split("|")
-            @searches << {keywords: arr[0], date: Time.at(arr[2][0..9].to_i)} #on enleve les milliemes (3derniers chiffre à droite)
+            {keywords: arr[0], date: Time.at(arr[2][0..9].to_i)} #on enleve les milliemes (3derniers chiffre à droite)
           end
-        }
+        }.compact!
       else
-        @searches = History.all
+        @history = History.all
 
       end
+
+      unless cookies['favorites'].nil? # à remplacer par le controleque le user n'est pas identifié. Car si il l'est alors on lui retourne son hisotrique savegardé
+        @favorites = cookies['favorites'].split("||").map { |k|
+          unless k.empty?
+            arr = k.split("|")
+            {keywords: arr[0], date: Time.at(arr[2][0..9].to_i)} #on enleve les milliemes (3derniers chiffre à droite)
+          end
+        }.compact!
+      else
+        #TODO @searches = Favorite.all
+        @favorites = []
+      end
+
       @search = Search.new
 
     rescue Exception => e
@@ -27,6 +39,7 @@ class HistoriesController < ApplicationController
     else
       respond_to do |format|
         format.js {}
+
       end
     end
 
@@ -36,7 +49,7 @@ class HistoriesController < ApplicationController
   # DELETE /searches/1.json
   def destroy
     @search.destroy
-    #redirect_to controller: 'histories', action: 'index', status: 303
+
     @searches = History.all
     respond_to do |format|
       format.js {}

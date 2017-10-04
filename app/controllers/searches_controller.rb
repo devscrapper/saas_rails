@@ -18,12 +18,31 @@ class SearchesController < ApplicationController
   # GET /searches/new@search
   def new
     @search = Search.new
+    @share = Search.new
     @search.keywords = "Enter your keywords"
   end
 
   # GET /searches/1/edit
   def edit
   end
+
+  def share
+    respond_to do |format|
+      begin
+        @search = Search.new
+        @share = Search.new
+      rescue Exception => e
+        logger.debug e.message
+
+      else
+
+      ensure
+        format.js {}
+
+      end
+    end
+  end
+
 
   # POST /searches
   # POST /searches.json
@@ -59,14 +78,12 @@ class SearchesController < ApplicationController
           @share = Search.new
         rescue Exception => e
           logger.debug e.message
-          format.html { render :new }
-          format.json { render json: e.message, status: :unprocessable_entity }
-          format.js {}
+
         else
-          #  format.json { render json: @result, status: :created }
-          #  format.html { redirect_to results_path(:search_id => @search.id), notice: "" }
+
+        ensure
           format.js {}
-          #  format.json { render :show, status: :created, location: @search }
+
         end
       end
     end
@@ -74,10 +91,7 @@ class SearchesController < ApplicationController
 
 
   def show
-    logger.debug params
-    respond_to do |format|
-      format.js {}
-    end
+
   end
 
 
@@ -129,4 +143,5 @@ class SearchesController < ApplicationController
   def search_params
     params[:search]
   end
+
 end

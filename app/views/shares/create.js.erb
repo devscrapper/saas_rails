@@ -1,0 +1,7 @@
+$("<div id='results'><%= if @search.results[0..9].empty?
+ escape_javascript(render partial:  "results/no_result")
+
+else
+ escape_javascript(render partial:  "results/result" , collection: @search.results[0..9])
+
+end %></div>").replaceAll("#results");

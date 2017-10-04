@@ -97,18 +97,45 @@
       function addToHistory(keyword) {
 
           try {
-              var keywords = getCookie(("keywords"));
+              var keywords = getCookie(("history"));
 
               keyword = keyword + '|' + "/search/" + keyword + '|' + (new Date()).getTime();
               keywords = keywords + '||' + keyword;
 
-
-              setCookie("keywords", keywords);
+              setCookie("history", keywords);
           }
           catch (e) {
               alert("7 => " + e.message);
           }
       }
+      function addToFavorites(keyword) {
+
+          try {
+              var keywords = getCookie(("favorites"));
+
+              keyword = keyword + '|' + "/search/" + keyword + '|' + (new Date()).getTime();
+              keywords = keywords + '||' + keyword;
+
+              setCookie("favorites", keywords);
+          }
+          catch (e) {
+              alert("7 => " + e.message);
+          }
+      }
+      function addToShare(tool) {
+
+               try {
+                   var keywords = getCookie(("favorites"));
+
+                   keyword = keyword + '|' + "/search/" + keyword + '|' + (new Date()).getTime();
+                   keywords = keywords + '||' + keyword;
+
+                   setCookie("favorites", keywords);
+               }
+               catch (e) {
+                   alert("7 => " + e.message);
+               }
+           }
   </script>
 </head>
 

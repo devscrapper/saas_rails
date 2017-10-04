@@ -1,4 +1,36 @@
 <script>
+    $(document).ready(function () {
+        $("#gsc-i-id1").change(function () {
+            alert("change") ;
+            if ($(this).val() == 'Enter your keywords') {
+                $(this).css('color', '#c2c0c0');
+            }
+            else {
+                $(this).css('color', 'black');
+            }
+        });
+        $("#gsc-i-id1").keydown(function () {
+            if ($(this).val() == 'Enter your keywords') {
+                $(this).val('') ;
+            }
+            else {
+
+            }
+        });
+        $("#gsc-i-id1").keyup(function () {
+            if ($(this).val() == "") {
+                $(this).val('Enter your keywords') ;
+                $(this).css('color', '#c2c0c0');
+            }
+            else {
+                $(this).css('color', 'black');
+            }
+        });
+        $("#gsc-i-id1").click(function () {
+            $(this).val('');
+            $(this).css('color', 'black');
+        });
+    });
     $(function () {
         $("#gsc-i-id1").on("swipe", swipeHandler);
 
@@ -20,32 +52,37 @@
             <div class="tablecell">
               <%= f.text_field(:keywords,
                                {size: 50, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false",
-                                onclick: "$(this).css(\"color\", \"black\");this.value = ''"})
+                                onclick: "onclick"})
               %>
             </div>
             <div class="tablecell">
               <%= f.button("searches",
                            id: "go",
                            class: "btn btn-default",
-
-                           onclick: "$('#search_icon').addClass('glyphicon-refresh spinning');addToHistory($('#gsc-i-id1').val());") do
+                           onclick: "setCookie('keywords', $('#gsc-i-id1').val());$('#search_icon').addClass('glyphicon-refresh spinning');addToHistory($('#gsc-i-id1').val());") do
                 content_tag(:span, nil, id: 'search_icon', class: 'glyphicon-left glyphicon glyphicon-search')
               end
               %>
             </div>
         <% end %>
+        <%= button_tag("favorite",
+                       class: "btn btn-default gsc-input",
+                       onclick: "addToFavorites($('#gsc-i-id1').val());") do
+          content_tag(:span, nil, id: 'favorite_icon', class: 'glyphicon-left glyphicon glyphicon-heart')
+        end %>
       </div>
-
     </div>
 
+    <!--- share ------------------------------------------------------------------------------------------------>
     <div class="mytable">
       <div class="tablecell">
-        <%= button_tag("share", class: "btn btn-default gsc-input", data: {toggle: "collapse", target: "#demo"}) do
+        <%= link_to(new_share_path, class: "btn btn-default gsc-input", remote: true, onclick: "") do
           content_tag(:span, nil, id: 'share_icon', class: 'glyphicon-left glyphicon glyphicon-share')
         end %>
       </div>
+      <!--- history - favorite ------------------------------------------------------------------------------------->
       <div class="tablecell">
-        <%= link_to(histories_path, class: "btn btn-default gsc-input", data: { toto: "54"} , remote: true, onclick: "$(\"#gsc-i-id1\").val(\"\");") do
+        <%= link_to(histories_path, class: "btn btn-default gsc-input", remote: true, onclick: "$(\"#gsc-i-id1\").val(\"Enter your keywords\");") do
           content_tag(:span, nil, id: 'history_icon', class: 'glyphicon-left glyphicon glyphicon-list-alt')
         end %>
       </div>

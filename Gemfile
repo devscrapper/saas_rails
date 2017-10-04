@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'pony', '~> 1.11.0'
 gem 'kaminari'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate', '~> 1.0.0'

@@ -1,3 +1,6 @@
+
+$("#gsc-i-id1").val("<%=@search.keywords%>");
+$("#gsc-i-id1").css('color', 'black');
 $("<div id='results'> <%= if @search.results[0..9].empty?
  escape_javascript(render partial:  "results/no_result")
 else
@@ -5,15 +8,6 @@ escape_javascript(render partial:  "results/result" , collection: @search.result
 end
 %></div>").replaceAll("#results");
 
-$(function () {
-    $("div").on("swipe", swipeHandler);
-
-    function swipeHandler(event, id) {
-
-        $(id).remove();
-
-    }
-});
 
 
 

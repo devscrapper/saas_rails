@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :shares
+  resources :shares
   resources :histories
   resources :searches
   match '/searches/delete_all', to: 'searches#delete_all', via: [:post], as: :delete_all
-
+  #match '/searches/share', to: 'searches#share', via: [:post], as: :share
 
   resources :licenses
   match '/proxies/check', to: 'proxies#check', via: [:get], as: :check

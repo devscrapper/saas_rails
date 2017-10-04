@@ -1,0 +1,23 @@
+<%= form_for(@share, remote: true) do |f| %>
+    <% if @share.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@share.errors.count, "error") %> prohibited this share from being saved:</h2>
+
+          <ul>
+            <% @share.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.text_field :recipient %>
+      <%= button_tag("mail",
+                   class: "btn btn-default",
+                   onclick: "setCookie('tool', 'mail');") do
+        content_tag(:span, nil, id: 'mail_icon', class: 'glyphicon-left glyphicon glyphicon-envelope')
+      end
+      %>
+    </div>
+<% end %>

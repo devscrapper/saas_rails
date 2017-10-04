@@ -1,4 +1,5 @@
 <script>
+
     function estVisible(id_element) {
         var cadreVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0}, elementVisible = {xMin: 0, xMax: 0, yMin: 0, yMax: 0};
         var source = document.getElementById(id_element), sourceParent = source.offsetParent;
@@ -48,7 +49,7 @@
         if (estVisible("next")) {
             $("#next").trigger("click");
         }
-    };
+    }
 
 </script>
 <div id='results'>
