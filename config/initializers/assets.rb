@@ -12,4 +12,5 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( moment.js )
 Rails.application.config.assets.precompile += %w( bootstrap-datetimepicker.js )
 Rails.application.config.assets.precompile += %w( yhminall-6671761.css )
+Rails.application.config.assets.precompile += %w( facebook.css )
 Rails.application.config.assets.precompile += %w( will_paginate.scss )

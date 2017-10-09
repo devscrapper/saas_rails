@@ -10,7 +10,7 @@
         });
         $("#gsc-i-id1").keydown(function () {
             if ($(this).val() == 'Enter your keywords') {
-                $(this).val('') ;
+                $(this).val('');
             }
             else {
 
@@ -18,7 +18,7 @@
         });
         $("#gsc-i-id1").keyup(function () {
             if ($(this).val() == "") {
-                $(this).val('Enter your keywords') ;
+                $(this).val('Enter your keywords');
                 $(this).css('color', '#c2c0c0');
             }
             else {
@@ -26,8 +26,14 @@
             }
         });
         $("#gsc-i-id1").click(function () {
-            $(this).val('');
-            $(this).css('color', 'black');
+            if ($(this).val() == 'Enter your keywords') {
+                $(this).val('');
+                $(this).css('color', 'black');
+            }
+            else {
+                $(this).val($(this).val());
+            }
+
         });
     });
     $(function () {
@@ -47,13 +53,22 @@
   <div class="bandeau navbar  navbar-fixed-top">
     <div class="mytable">
       <div class="tablecell">
-        <%= form_for(@search, remote: true) do |f| %>
+        <%= form_for(@search, methode: :post, action: :searches, remote: true) do |f| %>
             <div class="tablecell">
               <%= f.text_field(:keywords,
                                {size: 50, class: "gsc-input", id: "gsc-i-id1", autocomplete: "off", spellcheck: "false",
                                 onclick: "onclick"})
               %>
             </div>
+            <div class="tablecell">
+                  <%= button_tag(type: "button",
+                               class: "btn btn-default",
+                               onclick:  "$('#gsc-i-id1').val('')") do
+                    content_tag(:span, nil, id: 'remove_icon', class: ' glyphicon glyphicon-remove')
+                  end
+                  %>
+                </div>
+
             <div class="tablecell">
               <%= f.button("searches",
                            id: "go",

@@ -1,0 +1,109 @@
+<table>
+  <tr>
+    <td rowspan="3" >
+      <%
+         result_json = result['results'][0]
+         engines = result_json[1]['engines']
+         uri = URI(result_json[0])
+         hostname = uri.host
+         domain = hostname.split('.')[hostname.split('.').size - 2]
+         description = engines[0]["description"]
+         title = engines[0]["title"]
+      %>
+      <%= link_to image_tag(image_path(Result.favicon(hostname)), size: "40", class: "img-circle", alt: domain),
+                  uri.to_s,
+                  rel: "nofollow",
+                  target: :_blank,
+                  class: "btn btn-success" %>
+
+    </td>
+    <td >
+      <%= link_to content_tag("p", hostname, nil, class: "k m"),
+                  uri.to_s,
+                  rel: "nofollow",
+                  target: :_blank %>
+    </td>
+    <td >
+      <%= link_to image_tag(image_path(engines[0]["name"] + ".png"), size: "40", class: "img-circle", alt: domain),
+                  "http://www.#{engines[0]["name"]}.fr/search?q=toto", #TODO a remplacer par la bonne url fourit pas saas
+                  rel: "nofollow",
+                  target: :_blank,
+                  class: "btn" %>
+    </td>
+  </tr>
+
+  <tr>
+    <td >
+      <%= link_to content_tag("p", title, nil, class: "small text-justify"),
+                  uri.to_s,
+                  rel: "nofollow",
+                  target: :_blank %>
+    </td>
+    <td >
+      <% unless engines[1].nil? %>
+          <%= link_to image_tag(image_path(engines[1]["name"] + ".png"), size: "40", class: "img-circle", alt: domain),
+                      "http://www.#{engines[1]["name"]}.fr/search?q=toto", #TODO a remplacer par la bonne url fourit pas saas
+                      rel: "nofollow",
+                      target: :_blank,
+                      class: "btn" %>
+      <% end %>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td >
+      <%= link_to content_tag("p", description, nil, class: "small text-justify"),
+                  uri.to_s,
+                  rel: "nofollow",
+                  target: :_blank %>
+    </td>
+    <td >
+      <% unless engines[2].nil? %>
+          <%= link_to image_tag(image_path(engines[2]["name"] + ".png"), size: "40", class: "img-circle", alt: domain),
+                      "http://www.#{engines[2]["name"]}.fr/search?q=toto", #TODO a remplacer par la bonne url fourit pas saas
+                      rel: "nofollow",
+                      target: :_blank,
+                      class: "btn" %>
+      <% end %>
+    </td>
+    <td></td>
+
+  </tr>
+
+  <tr>
+    <td>
+      <%= button_tag "delete",
+                     onclick: "$(\'#result_" + result.id.to_s + "\').trigger(\"swipe\", \'#result_" + result.id.to_s + "\' );",
+                     class: "btn btn-danger" do
+        content_tag(:span, '', class: "glyphicon glyphicon-trash")
+      end %>
+    </td>
+    <td>
+    </td>
+    <td>
+      <%= button_tag "view",
+                     onclick: "$(\'#collapse_" + result.id.to_s + "\').click();",
+                     class: "btn btn-primary",
+                     alt: "Just have a look !",
+                     data: {toggle: "collapse", target: "#collapse_iframe_#{result.id.to_s}"} do
+        content_tag(:span, '', class: "glyphicon glyphicon-resize-full")
+      end %>
+    </td>
+  </tr>
+
+</table>
+
+
+<% if result_iteration.index == result_iteration.size - 1 %>
+    <%= link_to "", results_path({:id => result.id,
+                                  :index => result.index,
+                                  :search_id => result.search_id}),
+                remote: true,
+                id: "next",
+                class: "btn btn-default glyphicon glyphicon-play"
+
+    %>
+
+<% end %>
+
+
