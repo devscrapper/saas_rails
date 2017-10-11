@@ -1,5 +1,15 @@
 <script>
     $(document).ready(function () {
+
+        if ($("#gsc-i-id1").val() == 'Enter your keywords') {
+            $("#gsc-i-id1").css('color', '#c2c0c0');
+
+        }
+        else {
+
+            $("#gsc-i-id1").css('color', 'black');
+            $("#go").trigger("click");
+        }
         $("#gsc-i-id1").change(function () {
             if ($(this).val() == 'Enter your keywords') {
                 $(this).css('color', '#c2c0c0');
@@ -61,13 +71,13 @@
               %>
             </div>
             <div class="tablecell">
-                  <%= button_tag(type: "button",
-                               class: "btn btn-default",
-                               onclick:  "$('#gsc-i-id1').val('')") do
-                    content_tag(:span, nil, id: 'remove_icon', class: ' glyphicon glyphicon-remove')
-                  end
-                  %>
-                </div>
+              <%= button_tag(type: "button",
+                             class: "btn btn-default",
+                             onclick: "$('#gsc-i-id1').val('')") do
+                content_tag(:span, nil, id: 'remove_icon', class: ' glyphicon glyphicon-remove')
+              end
+              %>
+            </div>
 
             <div class="tablecell">
               <%= f.button("searches",

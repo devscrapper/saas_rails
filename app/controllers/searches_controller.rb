@@ -19,7 +19,11 @@ class SearchesController < ApplicationController
   def new
     @search = Search.new
     @share = Search.new
-    @search.keywords = "Enter your keywords"
+    if !cookies['keywords'].nil? and !cookies['keywords'].empty?
+      @search.keywords = cookies['keywords']
+    else
+      @search.keywords = "Enter your keywords"
+    end
   end
 
   # GET /searches/1/edit
@@ -94,6 +98,9 @@ class SearchesController < ApplicationController
 
   end
 
+  def keywords
+
+  end
 
   # PATCH/PUT /searches/1
   # PATCH/PUT /searches/1.json

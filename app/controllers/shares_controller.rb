@@ -12,6 +12,9 @@ class SharesController < ApplicationController
   # GET /shares/1
   # GET /shares/1.json
   def show
+    logger.debug cookies
+    cookies['keywords']=params[:id]
+    redirect_to root_path  , status: 303
   end
 
   # GET /shares/new
@@ -41,7 +44,7 @@ class SharesController < ApplicationController
         case tool
           when "mail"
 
-            text = "A friend desire to share a web search with you #{url_for("http://olgadays.synology.me:8081/searches/#{keywords}")}" #TODO a variabiliser
+            text = "A friend desire to share a web search with you #{url_for("http://olgadays.synology.me:8081/shares/#{keywords}")}" #TODO a variabiliser hostname
             logger.debug "text mail #{text}"
             logger.debug "recipient #{recipient}"
             MailSender.new("search.com", recipient, "share a search", text).send
@@ -55,7 +58,9 @@ class SharesController < ApplicationController
       else
 
       ensure
-         format.js {}
+        cookies['keywords'] = ''
+        cookies['tool'] = ''
+        format.js {}
 
 
       end
@@ -89,7 +94,7 @@ class SharesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_share
-    @share = Share.find(params[:id])
+   # @share = Share.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
